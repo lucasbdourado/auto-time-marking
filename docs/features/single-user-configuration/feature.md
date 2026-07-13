@@ -66,9 +66,9 @@ The system boots, reads the target configuration, validates the input formatting
 | Credentials leaked via source control | High | Medium | Add configuration file names to `.gitignore` and encourage environment variables. | Open |
 
 ## Feature Completion Criteria
-- [ ] Implementation of configuration parser.
-- [ ] Validation constraints (VR-001, VR-002, VR-003) implemented and covered by unit tests.
-- [ ] App exits with status code > 0 and error logging when configuration is invalid.
+- [x] Implementation of configuration parser.
+- [x] Validation constraints (VR-001, VR-002, VR-003) implemented and covered by unit tests.
+- [x] App exits with status code > 0 and error logging when configuration is invalid.
 
 ## Readiness Notes for Tech Spec
 - Determine config schema keys and path location in the filesystem.
