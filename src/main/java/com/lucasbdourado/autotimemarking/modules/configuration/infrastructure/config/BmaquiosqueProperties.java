@@ -65,4 +65,15 @@ public class BmaquiosqueProperties {
     public void setTimezone(String timezone) {
         this.timezone = timezone;
     }
+
+    @Override
+    public String toString() {
+        return "BmaquiosqueProperties{" +
+                "username='" + username + '\'' +
+                ", password='[PROTECTED]'" +
+                ", maxEntryTime='" + maxEntryTime + '\'' +
+                ", jitterMinutes=" + jitterMinutes +
+                ", timezone='" + timezone + '\'' +
+                '}';
+    }
 }

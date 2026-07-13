@@ -25,6 +25,11 @@ public class ConfigurationVerificationHook implements InitializingBean {
         List<String> errors = validator.validate(properties);
 
         if (errors.isEmpty()) {
+            logger.info("Loaded BMAquiosque configuration. User: {}, Max Entry Time: {}, Jitter: {} min, Timezone: {}.",
+                    properties.getUsername(),
+                    properties.getMaxEntryTime(),
+                    properties.getJitterMinutes(),
+                    properties.getTimezone());
             return;
         }
 
