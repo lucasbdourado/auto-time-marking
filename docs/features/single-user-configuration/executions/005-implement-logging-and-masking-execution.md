@@ -2,7 +2,7 @@
 
 ## Status
 
-In Progress
+Implemented
 
 ## Task Reference
 
@@ -12,7 +12,7 @@ Task file: `docs/features/single-user-configuration/tasks/005-implement-logging-
 
 Task status before execution: `Depends on Previous Task`
 
-Task status after execution: `Unchanged`
+Task status after execution: `Implemented`
 
 ## Task Plan Reference
 
@@ -32,7 +32,7 @@ Feature file: `docs/features/single-user-configuration/feature.md`
 
 ## Execution Finished At
 
-`Not finished`
+`2026-07-13T19:19:30-03:00`
 
 ## Source of Execution
 
@@ -49,13 +49,14 @@ Required task and task plan files were verified. The saved task plan references 
 
 ## Execution Summary
 
-Implementation has started. No source changes have been made yet.
+Implemented startup success logging for validated BMAquiosque configuration and added a safe `BmaquiosqueProperties.toString()` implementation that masks the password.
 
 ## Implemented Changes
 
 | Change | Evidence | Source Plan Step |
 | --- | --- | --- |
-| Pending | Pending | Pending |
+| Added masked `toString()` to `BmaquiosqueProperties` | `password='[PROTECTED]'` appears in `BmaquiosqueProperties.toString()` and raw password is not included in the returned string | Step 1 |
+| Added startup success log to `ConfigurationVerificationHook` | `logger.info("Loaded BMAquiosque configuration. User: {}, Max Entry Time: {}, Jitter: {} min, Timezone: {}.", ...)` runs when `errors.isEmpty()` | Steps 2-3 |
 
 ## Files Created
 
@@ -68,6 +69,9 @@ Implementation has started. No source changes have been made yet.
 | File | Purpose | Notes |
 | --- | --- | --- |
 | `docs/STATE.md` | Safe resume tracking | Updated before code changes as required |
+| `src/main/java/com/lucasbdourado/autotimemarking/modules/configuration/infrastructure/config/BmaquiosqueProperties.java` | Mask sensitive password in object string output | Added planned `toString()` override |
+| `src/main/java/com/lucasbdourado/autotimemarking/modules/configuration/infrastructure/config/ConfigurationVerificationHook.java` | Log configuration details after successful validation | Added planned SLF4J info log |
+| `docs/features/single-user-configuration/tasks/005-implement-logging-and-masking.md` | Task status tracking | Updated to `Implemented` after successful validation |
 
 ## Files Deleted
 
@@ -79,18 +83,19 @@ Implementation has started. No source changes have been made yet.
 
 | Acceptance Criterion | Evidence | Status |
 | --- | --- | --- |
-| Startup logs show configuration details upon successful validation | Pending | Pending |
-| The user's plain-text password value is never printed to console or logs | Pending | Pending |
+| Startup logs show configuration details upon successful validation | `ConfigurationVerificationHook.afterPropertiesSet()` logs the required format when `errors.isEmpty()` before returning | Covered |
+| The user's plain-text password value is never printed to console or logs | The success log passes only username, max entry time, jitter, and timezone; focused search found no logger or console call passing `getPassword()`; `toString()` renders `password='[PROTECTED]'` | Covered |
 
 ## Tests Executed
 
 | Command or Check | Purpose | Result | Notes |
 | --- | --- | --- | --- |
-| Pending | Pending | Pending | Pending |
+| `mvn clean compile` | Verify code compiles cleanly | Passed | Maven reported `BUILD SUCCESS`; 4 source files compiled with Java release 21 |
+| `rg -n "logger\.|System\.out|System\.err|getPassword\(|password" <edited files>` | Focused check that edited files do not pass raw password to logs or console | Passed | Only raw password accessors and masked `toString()` password output were found; hook log excludes password |
 
 ## Test Results
 
-Pending.
+`mvn clean compile` completed successfully with `BUILD SUCCESS`. Focused source inspection confirmed the new success log excludes password and `BmaquiosqueProperties.toString()` masks password as `[PROTECTED]`.
 
 ## Small Technical Adjustments
 
@@ -142,26 +147,26 @@ Revert local changes in git for `BmaquiosqueProperties.java` and `ConfigurationV
 
 ## Final Verification
 
-- [ ] Exactly one task was executed.
-- [ ] Task implementation followed the task plan.
-- [ ] No out-of-scope work was added.
-- [ ] Acceptance criteria were mapped to evidence.
-- [ ] Required tests or validations were run, or inability to run was documented.
-- [ ] Small technical adjustments were documented.
-- [ ] Execution blockers, failures, and missing plan information were documented.
-- [ ] `docs/STATE.md` was updated with the final safe resume point.
-- [ ] Task status was updated to `Implemented` only if execution succeeded.
-- [ ] Task was not marked as `Done`.
-- [ ] `tasks/README.md` was updated only if the task plan required it.
+- [x] Exactly one task was executed.
+- [x] Task implementation followed the task plan.
+- [x] No out-of-scope work was added.
+- [x] Acceptance criteria were mapped to evidence.
+- [x] Required tests or validations were run, or inability to run was documented.
+- [x] Small technical adjustments were documented.
+- [x] Execution blockers, failures, and missing plan information were documented.
+- [x] `docs/STATE.md` was updated with the final safe resume point.
+- [x] Task status was updated to `Implemented` only if execution succeeded.
+- [x] Task was not marked as `Done`.
+- [x] `tasks/README.md` was updated only if the task plan required it.
 
 ## Final State
 
-Execution is in progress. Safe resume point: apply the source changes defined by the task plan.
+Execution is implemented. Safe resume point: task `TSK-SUC-005` is complete and the next planned task can be started when requested.
 
 ## Required Next Action
 
-Continue implementation using the saved task plan.
+Not applicable.
 
 ## Notes for Review
 
-No deviations or blockers at execution start.
+The task index was not updated because this action was not defined in the task plan.
