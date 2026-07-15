@@ -1,14 +1,14 @@
-2026-07-14 13:33:12.569 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-07-14 13:33:12.667 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 20796 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
-2026-07-14 13:33:12.668 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
-2026-07-14 13:33:13.663 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: jitter-minutes must be a non-negative integer.
-2026-07-14 13:33:13.664 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: credentials cannot be blank.
-2026-07-14 13:33:13.664 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: max-entry-time must be in HH:mm format.
-2026-07-14 13:33:13.667 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'configurationVerificationHook' defined in file [C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes\com\lucasbdourado\autotimemarking\modules\configuration\infrastructure\config\ConfigurationVerificationHook.class]: BMAquiosque configuration validation failed
-2026-07-14 13:33:13.679 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+2026-07-15 12:36:57.935 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-15 12:36:58.038 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 22700 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-15 12:36:58.040 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 12:36:58.950 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: credentials cannot be blank.
+2026-07-15 12:36:58.951 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: jitter-minutes must be a non-negative integer.
+2026-07-15 12:36:58.951 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: max-entry-time must be in HH:mm format.
+2026-07-15 12:36:58.952 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'configurationVerificationHook' defined in file [C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes\com\lucasbdourado\autotimemarking\modules\configuration\infrastructure\config\ConfigurationVerificationHook.class]: BMAquiosque configuration validation failed
+2026-07-15 12:36:58.962 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger -
 
 Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-2026-07-14 13:33:13.748 [main] ERROR o.s.boot.SpringApplication - Application run failed
+2026-07-15 12:36:58.998 [main] ERROR o.s.boot.SpringApplication - Application run failed
 org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'configurationVerificationHook' defined in file [C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes\com\lucasbdourado\autotimemarking\modules\configuration\infrastructure\config\ConfigurationVerificationHook.class]: BMAquiosque configuration validation failed
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
@@ -33,8 +33,25 @@ Caused by: java.lang.IllegalStateException: BMAquiosque configuration validation
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1855)
 	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804)
 	... 17 common frames omitted
-2026-07-14 13:34:06.283 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
-2026-07-14 13:34:06.365 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 17852 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
-2026-07-14 13:34:06.366 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
-2026-07-14 13:34:07.119 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: user, Max Entry Time: 09:00, Jitter: 5 min, Timezone: America/Sao_Paulo.
-2026-07-14 13:34:07.235 [main] INFO  c.l.a.AutoTimeMarkingApplication - Started AutoTimeMarkingApplication in 1.626 seconds (process running for 2.105)
+2026-07-15 12:37:41.457 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-15 12:37:41.535 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 24384 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-15 12:37:41.537 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 12:37:42.329 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: validation-user, Max Entry Time: 09:00, Jitter: 0 min, Timezone: America/Sao_Paulo.
+2026-07-15 12:37:42.458 [main] INFO  c.l.a.AutoTimeMarkingApplication - Started AutoTimeMarkingApplication in 1.684 seconds (process running for 2.179)
+2026-07-15 12:38:59.810 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-15 12:38:59.924 [main] INFO  j.j.execution.RemoteExecutionControl - Starting RemoteExecutionControl using Java 21.0.11 with PID 21500 (started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-15 12:38:59.926 [main] INFO  j.j.execution.RemoteExecutionControl - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 12:39:00.915 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: validation-user, Max Entry Time: 09:00, Jitter: 0 min, Timezone: America/Sao_Paulo.
+2026-07-15 12:39:01.086 [main] INFO  j.j.execution.RemoteExecutionControl - Started RemoteExecutionControl in 2.046 seconds (process running for 5.754)
+2026-07-15 12:39:01.213 [main] INFO  manual.validation - mask-check password=****** "password": "xyz" pass=****** secret=****** credentials=******
+2026-07-15 12:40:09.675 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-15 12:40:09.752 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 20064 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-15 12:40:09.754 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 12:40:10.491 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: validation-user, Max Entry Time: 09:00, Jitter: 0 min, Timezone: America/Sao_Paulo.
+2026-07-15 12:40:10.591 [main] INFO  c.l.a.AutoTimeMarkingApplication - Started AutoTimeMarkingApplication in 1.591 seconds (process running for 2.056)
+2026-07-15 12:40:34.447 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-15 12:40:34.556 [main] INFO  j.j.execution.RemoteExecutionControl - Starting RemoteExecutionControl using Java 21.0.11 with PID 4328 (started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-15 12:40:34.558 [main] INFO  j.j.execution.RemoteExecutionControl - No active profile set, falling back to 1 default profile: "default"
+2026-07-15 12:40:35.648 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: validation-user, Max Entry Time: 09:00, Jitter: 0 min, Timezone: America/Sao_Paulo.
+2026-07-15 12:40:35.828 [main] INFO  j.j.execution.RemoteExecutionControl - Started RemoteExecutionControl in 2.187 seconds (process running for 5.915)
+2026-07-15 12:40:35.960 [main] INFO  manual.validation - mask-check password=****** "password": "******" pass=****** secret=****** credentials=******

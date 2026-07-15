@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <!-- TODO: Activate after MaskingConverter is implemented in task 002 -->
-    <!-- <conversionRule conversionWord="maskedMsg"
-         converterClass="com.lucasbdourado.autotimemarking.shared.infrastructure.logging.MaskingConverter" /> -->
+    <conversionRule conversionWord="maskedMsg"
+         converterClass="com.lucasbdourado.autotimemarking.shared.infrastructure.logging.MaskingConverter" />
 
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %maskedMsg%n" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
