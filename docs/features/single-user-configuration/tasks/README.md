@@ -26,13 +26,13 @@ The `single-user-configuration` feature is decomposed into small, sequential imp
 
 | Order | Task File | Goal | Status | Depends On | Blocking Reason |
 |---|---|---|---|---|---|
-| 001 | `001-setup-project-chassis.md` | Scaffolds the Maven pom.xml, Spring Boot entry point, and directory structure. | Ready | None | None |
-| 002 | `002-implement-bmaquiosque-properties.md` | Defines the ConfigurationProperties bean with fields and JSR-380 annotations. | Depends on Previous Task | `001-setup-project-chassis.md` | None |
-| 003 | `003-implement-properties-validator.md` | Implements logical validation checks (max-entry-time parsing/boundaries, timezone validation). | Depends on Previous Task | `002-implement-bmaquiosque-properties.md` | None |
-| 004 | `004-implement-verification-hook.md` | Integrates validation into Spring startup lifecycle to trigger fail-fast JVM shutdown on error. | Depends on Previous Task | `003-implement-properties-validator.md` | None |
-| 005 | `005-implement-logging-and-masking.md` | Formats success log message and masks sensitive passwords. | Depends on Previous Task | `004-implement-verification-hook.md` | None |
-| 006 | `006-implement-configuration-tests.md` | Creates unit and integration tests for all validations. | Depends on Previous Task | `005-implement-logging-and-masking.md` | None |
-| 999 | `999-verify-feature-completion.md` | Validates end-to-end feature capabilities and completion criteria. | Depends on Previous Task | `006-implement-configuration-tests.md` | None |
+| 001 | `001-setup-project-chassis.md` | Scaffolds the Maven pom.xml, Spring Boot entry point, and directory structure. | Implemented | None | None |
+| 002 | `002-implement-bmaquiosque-properties.md` | Defines the ConfigurationProperties bean with fields and JSR-380 annotations. | Implemented | `001-setup-project-chassis.md` | None |
+| 003 | `003-implement-properties-validator.md` | Implements logical validation checks (max-entry-time parsing/boundaries, timezone validation). | Implemented | `002-implement-bmaquiosque-properties.md` | None |
+| 004 | `004-implement-verification-hook.md` | Integrates validation into Spring startup lifecycle to trigger fail-fast JVM shutdown on error. | Implemented | `003-implement-properties-validator.md` | None |
+| 005 | `005-implement-logging-and-masking.md` | Formats success log message and masks sensitive passwords. | Implemented | `004-implement-verification-hook.md` | None |
+| 006 | `006-implement-configuration-tests.md` | Creates unit and integration tests for all validations. | Implemented | `005-implement-logging-and-masking.md` | None |
+| 999 | `999-verify-feature-completion.md` | Validates end-to-end feature capabilities and completion criteria. | Implemented | `006-implement-configuration-tests.md` | None |
 
 ## Suggested Execution Order
 

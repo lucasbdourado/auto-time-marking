@@ -14,7 +14,7 @@ Task ID: `TSK-AS-004`
 
 Task file: `docs/features/activity-scheduler/tasks/004-implement-activity-scheduler-runner.md`
 
-Task status: `Depends on Previous Task`
+Task status: `Ready`
 
 ## Feature Reference
 
@@ -47,11 +47,11 @@ Implement the `ActivityScheduler` class which periodically runs (every 30 minute
 
 ## Execution Eligibility
 
-Status: Not Eligible Yet
+Status: Eligible
 
 Reason:
 
-- This task depends on the implementation of `SchedulerTimezoneFilter` (TSK-AS-003) and the `MarkingWorkflow` interface (TSK-AS-001). While TSK-AS-001 is implemented, TSK-AS-003 has only been planned and is not yet implemented. Thus, this task cannot be executed until TSK-AS-003 is complete.
+- All dependencies (TSK-AS-001 and TSK-AS-003) have been successfully implemented in the codebase.
 
 ## Feature Context
 
@@ -203,8 +203,8 @@ Define how the future implementation should be verified.
 List task dependencies, sequencing constraints, external dependencies, and execution eligibility constraints.
 
 - `001-define-marking-workflow-interface.md` (Implemented)
-- `003-implement-scheduler-timezone-filter.md` (Planned, Not Implemented)
-- Sequencing constraint: Must wait for Task 003 implementation before this task can compile and execute.
+- `003-implement-scheduler-timezone-filter.md` (Implemented)
+- Sequencing constraint: All prerequisite tasks are completed.
 
 ## Risks and Edge Cases
 

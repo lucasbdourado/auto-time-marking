@@ -1,5 +1,6 @@
 package com.lucasbdourado.autotimemarking.modules.scheduler.infrastructure.config;
 
+import com.lucasbdourado.autotimemarking.modules.scheduler.domain.SchedulerTimezoneFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
@@ -9,6 +10,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 @EnableScheduling
 public class SchedulerConfig {
+
+    @Bean
+    public SchedulerTimezoneFilter schedulerTimezoneFilter() {
+        return new SchedulerTimezoneFilter();
+    }
 
     @Bean
     public TaskScheduler taskScheduler() {

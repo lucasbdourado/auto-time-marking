@@ -32,10 +32,10 @@ The activity-scheduler feature has been decomposed into modular tasks following 
 
 | Order | Task File | Goal | Status | Depends On | Blocking Reason |
 |---|---|---|---|---|---|
-| 001 | `001-define-marking-workflow-interface.md` | Define the MarkingWorkflow domain interface. | Ready | None | None |
-| 002 | `002-configure-scheduler-thread-pool.md` | Configure the custom TaskScheduler thread pool in SchedulerConfig. | Ready | None | None |
-| 003 | `003-implement-scheduler-timezone-filter.md` | Implement the timezone-aware window check logic. | Ready | None | None |
-| 004 | `004-implement-activity-scheduler-runner.md` | Implement the ActivityScheduler component with @Scheduled. | Depends on Previous Task | `001-define-marking-workflow-interface.md`, `003-implement-scheduler-timezone-filter.md` | None |
+| 001 | `001-define-marking-workflow-interface.md` | Define the MarkingWorkflow domain interface. | Implemented | None | None |
+| 002 | `002-configure-scheduler-thread-pool.md` | Configure the custom TaskScheduler thread pool in SchedulerConfig. | Implemented | None | None |
+| 003 | `003-implement-scheduler-timezone-filter.md` | Implement the timezone-aware window check logic. | Implemented | None | None |
+| 004 | `004-implement-activity-scheduler-runner.md` | Implement the ActivityScheduler component with @Scheduled. | Ready | `001-define-marking-workflow-interface.md`, `003-implement-scheduler-timezone-filter.md` | None |
 | 005 | `005-write-scheduler-unit-tests.md` | Implement unit tests for window filtering and failure recovery. | Depends on Previous Task | `004-implement-activity-scheduler-runner.md` | None |
 | 006 | `006-write-scheduler-integration-tests.md` | Implement integration tests for Spring configuration. | Depends on Previous Task | `002-configure-scheduler-thread-pool.md` | None |
 | 999 | `999-verify-feature-completion.md` | Validate feature completion and criteria verification. | Depends on Previous Task | `005-write-scheduler-unit-tests.md`, `006-write-scheduler-integration-tests.md` | None |

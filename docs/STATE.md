@@ -6,15 +6,15 @@
 
 ## Current Task
 
-`TSK-AS-003 - docs/features/activity-scheduler/tasks/003-implement-scheduler-timezone-filter.md`
+`TSK-AS-004 - docs/features/activity-scheduler/tasks/004-implement-activity-scheduler-runner.md`
 
 ## Current Task Plan
 
-`docs/features/activity-scheduler/task-plans/003-implement-scheduler-timezone-filter-plan.md`
+`docs/features/activity-scheduler/task-plans/004-implement-activity-scheduler-runner-plan.md`
 
 ## Current Execution Report
 
-`docs/features/activity-scheduler/executions/003-implement-scheduler-timezone-filter-execution.md`
+`docs/features/activity-scheduler/executions/004-implement-activity-scheduler-runner-execution.md`
 
 ## Current Status
 
@@ -22,7 +22,7 @@ Implemented
 
 ## Last Completed Step
 
-Created `SchedulerTimezoneFilter.java`, ran `mvn clean compile` successfully, finalized the execution report, and updated the task status to `Implemented`.
+Registered the timezone filter bean, created `ActivityScheduler`, ran `mvn clean compile` successfully, mapped all acceptance criteria to evidence, finalized the execution report, and updated the task status to `Implemented`.
 
 ## Current Blocker
 
@@ -34,12 +34,12 @@ Not applicable.
 
 ## Safe Resume Point
 
-Review `docs/features/activity-scheduler/executions/003-implement-scheduler-timezone-filter-execution.md`; task `TSK-AS-003` is implemented and validated.
+Review `docs/features/activity-scheduler/executions/004-implement-activity-scheduler-runner-execution.md`; task TSK-AS-004 is implemented and validated. A downstream task may proceed only through its own saved plan.
 
 ## Last Updated
 
-`2026-07-15 15:09:52 -03:00`
+`2026-07-15 15:30:27 -03:00`
 
 ## Notes
 
-Executed exactly one task: `TSK-AS-003`. Validation command `mvn clean compile` passed. `tasks/README.md` was not updated because the task plan did not instruct it.
+Executed exactly one task: TSK-AS-004. Validation command `mvn clean compile` passed. `docs/features/activity-scheduler/tasks/README.md` was not updated by this execution because the task plan did not authorize it.
