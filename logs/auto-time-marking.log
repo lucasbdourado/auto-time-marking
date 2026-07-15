@@ -1,0 +1,40 @@
+2026-07-14 13:33:12.569 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-14 13:33:12.667 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 20796 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-14 13:33:12.668 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-14 13:33:13.663 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: jitter-minutes must be a non-negative integer.
+2026-07-14 13:33:13.664 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: credentials cannot be blank.
+2026-07-14 13:33:13.664 [main] ERROR c.l.a.m.c.i.c.ConfigurationVerificationHook - BMAquiosque configuration error: max-entry-time must be in HH:mm format.
+2026-07-14 13:33:13.667 [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'configurationVerificationHook' defined in file [C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes\com\lucasbdourado\autotimemarking\modules\configuration\infrastructure\config\ConfigurationVerificationHook.class]: BMAquiosque configuration validation failed
+2026-07-14 13:33:13.679 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-07-14 13:33:13.748 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'configurationVerificationHook' defined in file [C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes\com\lucasbdourado\autotimemarking\modules\configuration\infrastructure\config\ConfigurationVerificationHook.class]: BMAquiosque configuration validation failed
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:336)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:289)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:334)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1122)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1093)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1030)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.lucasbdourado.autotimemarking.AutoTimeMarkingApplication.main(AutoTimeMarkingApplication.java:12)
+Caused by: java.lang.IllegalStateException: BMAquiosque configuration validation failed
+	at com.lucasbdourado.autotimemarking.modules.configuration.infrastructure.config.ConfigurationVerificationHook.afterPropertiesSet(ConfigurationVerificationHook.java:40)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1855)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804)
+	... 17 common frames omitted
+2026-07-14 13:34:06.283 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.2.Final
+2026-07-14 13:34:06.365 [main] INFO  c.l.a.AutoTimeMarkingApplication - Starting AutoTimeMarkingApplication using Java 21.0.11 with PID 17852 (C:\Users\lucas.dourado\IdeaProjects\auto-time-marking\target\classes started by lucas.dourado in C:\Users\lucas.dourado\IdeaProjects\auto-time-marking)
+2026-07-14 13:34:06.366 [main] INFO  c.l.a.AutoTimeMarkingApplication - No active profile set, falling back to 1 default profile: "default"
+2026-07-14 13:34:07.119 [main] INFO  c.l.a.m.c.i.c.ConfigurationVerificationHook - Loaded BMAquiosque configuration. User: user, Max Entry Time: 09:00, Jitter: 5 min, Timezone: America/Sao_Paulo.
+2026-07-14 13:34:07.235 [main] INFO  c.l.a.AutoTimeMarkingApplication - Started AutoTimeMarkingApplication in 1.626 seconds (process running for 2.105)
