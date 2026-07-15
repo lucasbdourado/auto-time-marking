@@ -6,15 +6,15 @@
 
 ## Current Task
 
-`TSK-AS-004 - docs/features/activity-scheduler/tasks/004-implement-activity-scheduler-runner.md`
+`TSK-AS-005 - docs/features/activity-scheduler/tasks/005-write-scheduler-unit-tests.md`
 
 ## Current Task Plan
 
-`docs/features/activity-scheduler/task-plans/004-implement-activity-scheduler-runner-plan.md`
+`docs/features/activity-scheduler/task-plans/005-write-scheduler-unit-tests-plan.md`
 
 ## Current Execution Report
 
-`docs/features/activity-scheduler/executions/004-implement-activity-scheduler-runner-execution.md`
+`docs/features/activity-scheduler/executions/005-write-scheduler-unit-tests-execution.md`
 
 ## Current Status
 
@@ -22,11 +22,11 @@ Implemented
 
 ## Last Completed Step
 
-Registered the timezone filter bean, created `ActivityScheduler`, ran `mvn clean compile` successfully, mapped all acceptance criteria to evidence, finalized the execution report, and updated the task status to `Implemented`.
+Created both planned unit test classes, ran `mvn clean test` successfully, manually verified all planned scenarios, mapped every acceptance criterion to evidence, finalized the execution report, and updated the task status to `Implemented`.
 
 ## Current Blocker
 
-None
+None.
 
 ## Required Next Action
 
@@ -34,12 +34,12 @@ Not applicable.
 
 ## Safe Resume Point
 
-Review `docs/features/activity-scheduler/executions/004-implement-activity-scheduler-runner-execution.md`; task TSK-AS-004 is implemented and validated. A downstream task may proceed only through its own saved plan.
+Review `docs/features/activity-scheduler/executions/005-write-scheduler-unit-tests-execution.md`; TSK-AS-005 is implemented and validated. A downstream task may proceed only through its own saved plan.
 
 ## Last Updated
 
-`2026-07-15 15:30:27 -03:00`
+`2026-07-15 15:37:57 -03:00`
 
 ## Notes
 
-Executed exactly one task: TSK-AS-004. Validation command `mvn clean compile` passed. `docs/features/activity-scheduler/tasks/README.md` was not updated by this execution because the task plan did not authorize it.
+Executed exactly one task: TSK-AS-005. Validation command `mvn clean test` passed with 51 tests, 0 failures, 0 errors, and 0 skipped. The tracked runtime log was restored after validation. `docs/features/activity-scheduler/tasks/README.md` was not updated because the task plan did not authorize it.

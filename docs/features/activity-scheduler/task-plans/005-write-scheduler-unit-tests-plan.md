@@ -38,11 +38,12 @@ List every required document, optional document, guideline, decision, localized 
 | Technology Definition | `docs/architecture/auto-time-marking/technology-definition.md` | Confirmed Technology Decisions, Testing | Confirmed by source document | Confirmed stack choices (Java 21, Spring Boot, JUnit 5 + Mockito). |
 | Codebase File | `src/main/java/com/lucasbdourado/autotimemarking/modules/scheduler/domain/SchedulerTimezoneFilter.java` | Package structure and class methods | Confirmed by codebase check | Source class to be tested. |
 | Codebase File | `src/main/java/com/lucasbdourado/autotimemarking/modules/scheduler/domain/MarkingWorkflow.java` | Interface structure | Confirmed by codebase check | Dependency to be mocked. |
+| Codebase File | `src/main/java/com/lucasbdourado/autotimemarking/modules/scheduler/infrastructure/scheduling/ActivityScheduler.java` | Methods to test | Confirmed by codebase check | Source class to be tested. |
 | Codebase File | `src/test/java/com/lucasbdourado/autotimemarking/shared/infrastructure/logging/MaskingConverterTest.java` | Testing style | Confirmed by codebase check | Reference for JUnit 5, AssertJ, and Mockito styles. |
 
 ## Planning Scope
 
-The scope of this planning session is limited to designing the unit tests for `SchedulerTimezoneFilter` and the proposed `ActivityScheduler` runner class. This plan covers only the unit testing task (TSK-AS-005) and does not authorize code changes or execution of tests.
+The scope of this planning session is limited to designing the unit tests for `SchedulerTimezoneFilter` and `ActivityScheduler` runner class. This plan covers only the unit testing task (TSK-AS-005) and does not authorize code changes or execution of tests.
 
 ## Task Summary
 
@@ -50,11 +51,11 @@ Create and implement two unit test classes (`SchedulerTimezoneFilterTest` and `A
 
 ## Execution Eligibility
 
-Status: Not Eligible Yet
+Status: Eligible
 
 Reason:
 
-- This task is not eligible yet because it depends on `004-implement-activity-scheduler-runner.md` (TSK-AS-004), which is not yet implemented. The `ActivitySchedulerTest` class tests the `ActivityScheduler` class, which will be implemented in Task 004. Once Task 004 is completed, this task will become eligible for execution.
+- The dependency `004-implement-activity-scheduler-runner.md` (TSK-AS-004) has been implemented, and the `ActivityScheduler` class is fully available in the codebase. Therefore, this task is eligible for execution.
 
 ## Feature Context
 
@@ -91,9 +92,9 @@ List confirmed technology decisions that constrain this plan.
 
 Record the internal guidelines consulted for this task.
 
-```text
-No technology-specific guideline applies to this task.
-```
+| Guideline | Path | Applies To | How It Affects This Plan |
+| --- | --- | --- | --- |
+| Java Guidelines | `.agents/docs/architecture/coding-guidelines/README.md` | Whole project | Standard package naming (`com.lucasbdourado.autotimemarking...`) and modular organization. |
 
 ## Existing Decisions Reviewed
 
@@ -109,6 +110,7 @@ Record only localized codebase checks directly related to this task.
 
 | Path or Area | What Was Checked | Relevance | Notes |
 | --- | --- | --- | --- |
+| `src/main/java/com/lucasbdourado/autotimemarking/modules/scheduler/infrastructure/scheduling/ActivityScheduler.java` | Actual implemented class | Verifies method names and parameters | The method is named `execute()` and has no parameters. |
 | `src/test/java/com/lucasbdourado/autotimemarking/shared/infrastructure/logging/MaskingConverterTest.java` | Test structure | Confirms usage of `org.junit.jupiter.api.Test`, AssertJ, and Mockito. | Follows the exact package and class structure. |
 
 ## Confirmed Scope
@@ -126,10 +128,10 @@ List the work confirmed to be part of this task.
   - Sunday 12:00:00 -> returns `false` (Skip)
   - Null input -> returns `false` (graceful validation)
 - Create the test class `ActivitySchedulerTest` in package `com.lucasbdourado.autotimemarking.modules.scheduler.infrastructure.scheduling`.
-- Cover the following scenarios for `ActivityScheduler.runSchedulerCycle()` (or whatever the scheduled method name in Task 004 is):
+- Cover the following scenarios for `ActivityScheduler.execute()`:
   - When `SchedulerTimezoneFilter.isWithinOperatingWindow` returns `true`, verify `MarkingWorkflow.executeMarkingCycle()` is called exactly once.
   - When `SchedulerTimezoneFilter.isWithinOperatingWindow` returns `false`, verify `MarkingWorkflow.executeMarkingCycle()` is never called.
-  - When `SchedulerTimezoneFilter.isWithinOperatingWindow` returns `true` but `MarkingWorkflow.executeMarkingCycle()` throws an exception, verify that the exception is caught, the loop runs safely without throwing, and `assertThatCode` asserts no exception escapes the method.
+  - When `SchedulerTimezoneFilter.isWithinOperatingWindow` returns `true` but `MarkingWorkflow.executeMarkingCycle()` throws an exception, verify that the exception is caught, the execution completes safely without throwing, and `assertThatCode` asserts no exception escapes the method.
 
 ## Out of Scope
 
@@ -154,9 +156,9 @@ Describe the future implementation approach using only confirmed information.
      - `@Mock private SchedulerTimezoneFilter timezoneFilter;`
    - Inject these mocks into `ActivityScheduler` via its constructor.
    - Implement three `@Test` methods:
-     - `runSchedulerCycle_whenInsideWindow_shouldExecuteWorkflow()`
-     - `runSchedulerCycle_whenOutsideWindow_shouldSkipWorkflow()`
-     - `runSchedulerCycle_whenWorkflowThrowsException_shouldCatchAndLog()`
+     - `execute_whenInsideWindow_shouldExecuteWorkflow()`
+     - `execute_whenOutsideWindow_shouldSkipWorkflow()`
+     - `execute_whenWorkflowThrowsException_shouldCatchAndLog()`
    - Assert exception suppression using AssertJ's `assertThatCode(...).doesNotThrowAnyException()`.
 
 ## Expected Files or Areas
@@ -180,9 +182,9 @@ Give the future `execute-task` agent a focused sequence of implementation steps.
 4. Verify that null arguments are handled gracefully and return `false`.
 5. Create `ActivitySchedulerTest.java` under the scheduling infrastructure test package.
 6. Set up Mockito mocks for `MarkingWorkflow` and `SchedulerTimezoneFilter`, and constructor-inject them into `ActivityScheduler`. Pass a valid timezone string (e.g., `"America/Sao_Paulo"`).
-7. Implement the test method to mock filter returning `true` and check that workflow `executeMarkingCycle()` is invoked once.
-8. Implement the test method to mock filter returning `false` and check that workflow `executeMarkingCycle()` is never invoked.
-9. Implement the test method to mock filter returning `true` and workflow throwing an exception, and verify that the exception is caught (the method does not throw).
+7. Implement the test method to mock filter returning `true` and check that workflow `executeMarkingCycle()` is invoked once when `execute()` is called.
+8. Implement the test method to mock filter returning `false` and check that workflow `executeMarkingCycle()` is never invoked when `execute()` is called.
+9. Implement the test method to mock filter returning `true` and workflow throwing an exception, and verify that the exception is caught (the `execute()` method does not throw).
 10. Run `mvn clean test` to execute all unit tests and verify they pass.
 
 ## Acceptance Criteria Mapping
@@ -194,7 +196,7 @@ Map task acceptance criteria to planned implementation and validation evidence.
 | Test classes are created under `src/test/java`. | Yes, test classes will be created under the modular structure `src/test/java/com/lucasbdourado/autotimemarking/modules/scheduler/`. | Verify file paths in PR / repository. |
 | Tests run and pass using JUnit 5 and Mockito. | Yes, tests will use Jupiter `@Test` and `@ExtendWith(MockitoExtension.class)`. | Execution of `mvn clean test` yields green builds. |
 | Tests verify all boundary conditions of day-of-week and time-window filtering. | Yes, covered by `SchedulerTimezoneFilterTest` scenarios (04:59, 05:00, 22:00, 22:01, Wednesday, Saturday, Sunday). | Assertions in `SchedulerTimezoneFilterTest`. |
-| Tests verify that exceptions thrown in the workflow do not escape the scheduler runner's scheduled method. | Yes, covered by `ActivitySchedulerTest` mock throwing exception. | `assertThatCode(() -> scheduler.runSchedulerCycle()).doesNotThrowAnyException()` assertion. |
+| Tests verify that exceptions thrown in the workflow do not escape the scheduler runner's scheduled method. | Yes, covered by `ActivitySchedulerTest` mock throwing exception. | `assertThatCode(() -> scheduler.execute()).doesNotThrowAnyException()` assertion. |
 
 ## Tests and Validation Strategy
 
@@ -209,7 +211,7 @@ Define how the future implementation should be verified.
 
 List task dependencies, sequencing constraints, external dependencies, and execution eligibility constraints.
 
-- `004-implement-activity-scheduler-runner.md` (TSK-AS-004) - Must be completed so the runner class `ActivityScheduler` exists and can be tested.
+- `004-implement-activity-scheduler-runner.md` (TSK-AS-004) - Must be completed so the runner class `ActivityScheduler` exists and can be tested. (Status: Already Implemented in codebase).
 
 ## Risks and Edge Cases
 
