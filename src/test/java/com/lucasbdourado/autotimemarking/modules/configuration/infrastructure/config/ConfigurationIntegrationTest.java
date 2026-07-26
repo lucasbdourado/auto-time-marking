@@ -86,6 +86,16 @@ class ConfigurationIntegrationTest {
             properties.setMaxEntryTime(environment.getProperty("bmaquiosque.max-entry-time"));
             properties.setJitterMinutes(environment.getProperty("bmaquiosque.jitter-minutes", Integer.class));
             properties.setTimezone(environment.getProperty("bmaquiosque.timezone"));
+            properties.setUrl(environment.getProperty("bmaquiosque.url", "https://bmaquiosque.example.com"));
+
+            BmaquiosqueProperties.Selectors selectors = new BmaquiosqueProperties.Selectors();
+            selectors.setUsername(environment.getProperty("bmaquiosque.selectors.username", "input[name='username']"));
+            selectors.setPassword(environment.getProperty("bmaquiosque.selectors.password", "input[name='password']"));
+            selectors.setLoginButton(environment.getProperty("bmaquiosque.selectors.login-button", "button[type='submit']"));
+            selectors.setMarkingsContainer(environment.getProperty("bmaquiosque.selectors.markings-container", ".marking-time-text"));
+            selectors.setPunchButton(environment.getProperty("bmaquiosque.selectors.punch-button", "#btn-punch"));
+            properties.setSelectors(selectors);
+
             return properties;
         }
 

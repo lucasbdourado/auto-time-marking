@@ -22,6 +22,28 @@ public class BmaquiosqueProperties {
 
     private String timezone = "America/Sao_Paulo";
 
+    @NotBlank
+    private String url;
+
+    @NotNull
+    private Selectors selectors = new Selectors();
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Selectors getSelectors() {
+        return selectors;
+    }
+
+    public void setSelectors(Selectors selectors) {
+        this.selectors = selectors;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -62,10 +84,81 @@ public class BmaquiosqueProperties {
         this.timezone = timezone;
     }
 
+    public static class Selectors {
+
+        @NotBlank
+        private String username;
+
+        @NotBlank
+        private String password;
+
+        @NotBlank
+        private String loginButton;
+
+        @NotBlank
+        private String markingsContainer;
+
+        @NotBlank
+        private String punchButton;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public String getLoginButton() {
+            return loginButton;
+        }
+
+        public void setLoginButton(String loginButton) {
+            this.loginButton = loginButton;
+        }
+
+        public String getMarkingsContainer() {
+            return markingsContainer;
+        }
+
+        public void setMarkingsContainer(String markingsContainer) {
+            this.markingsContainer = markingsContainer;
+        }
+
+        public String getPunchButton() {
+            return punchButton;
+        }
+
+        public void setPunchButton(String punchButton) {
+            this.punchButton = punchButton;
+        }
+
+        @Override
+        public String toString() {
+            return "Selectors{" +
+                    "username='" + username + '\'' +
+                    ", password='" + password + '\'' +
+                    ", loginButton='" + loginButton + '\'' +
+                    ", markingsContainer='" + markingsContainer + '\'' +
+                    ", punchButton='" + punchButton + '\'' +
+                    '}';
+        }
+    }
+
     @Override
     public String toString() {
         return "BmaquiosqueProperties{" +
-                "username='" + username + '\'' +
+                "url='" + url + '\'' +
+                ", selectors=" + selectors +
+                ", username='" + username + '\'' +
                 ", password='[PROTECTED]'" +
                 ", maxEntryTime='" + maxEntryTime + '\'' +
                 ", jitterMinutes=" + jitterMinutes +

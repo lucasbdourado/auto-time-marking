@@ -21,6 +21,8 @@ class BmaquiosquePropertiesValidatorTest {
     private static final String MAX_ENTRY_TIME_FORMAT_ERROR = "max-entry-time must be in HH:mm format.";
     private static final String MAX_ENTRY_TIME_BOUNDARY_ERROR = "max-entry-time must be between 05:00 and 22:00.";
     private static final String TIMEZONE_ERROR = "timezone is invalid.";
+    private static final String URL_ERROR = "url must be a valid HTTP or HTTPS URL.";
+    private static final String SELECTORS_ERROR = "selectors cannot be blank.";
 
     private ValidatorFactory validatorFactory;
     private BmaquiosquePropertiesValidator validator;
@@ -137,6 +139,38 @@ class BmaquiosquePropertiesValidatorTest {
         assertThat(errors).containsExactly(TIMEZONE_ERROR);
     }
 
+    @ParameterizedTest
+    @NullAndEmptySource
+    @ValueSource(strings = {" ", "ftp://invalid-url", "just-text", "http://"})
+    void shouldReturnUrlErrorWhenUrlIsInvalid(String url) {
+        BmaquiosqueProperties properties = validProperties();
+        properties.setUrl(url);
+
+        List<String> errors = validator.validate(properties);
+
+        assertThat(errors).containsExactly(URL_ERROR);
+    }
+
+    @Test
+    void shouldReturnSelectorsErrorWhenSelectorsIsNull() {
+        BmaquiosqueProperties properties = validProperties();
+        properties.setSelectors(null);
+
+        List<String> errors = validator.validate(properties);
+
+        assertThat(errors).containsExactly(SELECTORS_ERROR);
+    }
+
+    @Test
+    void shouldReturnSelectorsErrorWhenSelectorFieldIsBlank() {
+        BmaquiosqueProperties properties = validProperties();
+        properties.getSelectors().setUsername("");
+
+        List<String> errors = validator.validate(properties);
+
+        assertThat(errors).containsExactly(SELECTORS_ERROR);
+    }
+
     @Test
     void shouldReturnNoErrorsWhenPropertiesAreValid() {
         BmaquiosqueProperties properties = validProperties();
@@ -160,6 +194,14 @@ class BmaquiosquePropertiesValidatorTest {
         properties.setMaxEntryTime("09:00");
         properties.setJitterMinutes(5);
         properties.setTimezone("America/Sao_Paulo");
+        properties.setUrl("https://bmaquiosque.example.com");
+        BmaquiosqueProperties.Selectors selectors = new BmaquiosqueProperties.Selectors();
+        selectors.setUsername("input[name='username']");
+        selectors.setPassword("input[name='password']");
+        selectors.setLoginButton("button[type='submit']");
+        selectors.setMarkingsContainer(".marking-time-text");
+        selectors.setPunchButton("#btn-punch");
+        properties.setSelectors(selectors);
         return properties;
     }
 }

@@ -2,27 +2,20 @@
 
 ## Current Feature
 
-`bmaquiosque-automation`
+`bmaquiosque-automation` / `marking-calculation`
 
-## Current Task
+## Current Feature Specs
 
-`TSK-BMA-001 - docs/features/bmaquiosque-automation/tasks/001-add-playwright-dependency.md`
-
-## Current Task Plan
-
-`docs/features/bmaquiosque-automation/task-plans/001-add-playwright-dependency-plan.md`
-
-## Current Execution Report
-
-`docs/features/bmaquiosque-automation/executions/001-add-playwright-dependency-execution.md`
+- `docs/features/bmaquiosque-automation/feature-spec.md`
+- `docs/features/marking-calculation/feature-spec.md`
 
 ## Current Status
 
-Implemented
+Feature Specs Confirmed
 
 ## Last Completed Step
 
-Added the exact planned Playwright dependency, ran all required validation, mapped both acceptance criteria to evidence, updated the task status to `Implemented`, and finalized the execution report.
+Generated full `feature-spec.md` documents for both Phase 2 features (`bmaquiosque-automation` and `marking-calculation`), including research context, confirmed facts vs assumptions, acceptance criteria, technical design, and implementation checklists.
 
 ## Current Blocker
 
@@ -30,16 +23,12 @@ None.
 
 ## Required Next Action
 
-Not applicable. The task is implemented successfully.
+Select feature spec checklist item to execute (`bmaquiosque-automation` task 2 or `marking-calculation` task 1).
 
 ## Safe Resume Point
 
-Review `docs/features/bmaquiosque-automation/executions/001-add-playwright-dependency-execution.md`. No execution work remains for TSK-BMA-001; continue only with a separately planned task.
+Review `docs/features/bmaquiosque-automation/feature-spec.md` and `docs/features/marking-calculation/feature-spec.md`.
 
 ## Last Updated
 
-`2026-07-15 16:10:54 -03:00`
-
-## Notes
-
-Executed exactly one task: TSK-BMA-001. `mvn clean compile` passed with exit code 0 and `BUILD SUCCESS`; Maven resolved Playwright 1.49.0 and compiled 9 source files. The task index was not updated because the plan did not authorize it.
+`2026-07-26 00:33:00 -03:00`
