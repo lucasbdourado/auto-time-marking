@@ -46,7 +46,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton());
+                            page.click(properties.getSelectors().getLoginButton(), new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Waiting for markings container selector: {}", properties.getSelectors().getMarkingsContainer());
                             page.waitForSelector(properties.getSelectors().getMarkingsContainer());
@@ -85,11 +85,29 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton());
+                            page.click(properties.getSelectors().getLoginButton(), new Page.ClickOptions().setForce(true));
+
+                            LOGGER.info("Checking for punch button selector: {}", properties.getSelectors().getPunchButton());
+                            if (page.querySelectorAll(properties.getSelectors().getPunchButton()).isEmpty()) {
+                                if (!page.querySelectorAll("a[href*='/marcacao/registrar']").isEmpty()) {
+                                    page.click("a[href*='/marcacao/registrar']", new Page.ClickOptions().setForce(true));
+                                } else {
+                                    String regUrl = properties.getUrl();
+                                    if (!regUrl.endsWith("/")) {
+                                        regUrl += "/";
+                                    }
+                                    page.navigate(regUrl + "marcacao/registrar");
+                                }
+                            }
 
                             LOGGER.info("Waiting for punch button selector: {}", properties.getSelectors().getPunchButton());
                             page.waitForSelector(properties.getSelectors().getPunchButton());
-                            page.click(properties.getSelectors().getPunchButton());
+
+                            if (!page.querySelectorAll("#formMarcacao #Senha").isEmpty()) {
+                                page.fill("#formMarcacao #Senha", password);
+                            }
+
+                            page.click(properties.getSelectors().getPunchButton(), new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Successfully registered time marking for user: {}", username);
                         } catch (Exception exception) {
