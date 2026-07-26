@@ -6,6 +6,8 @@ import com.lucasbdourado.autotimemarking.modules.calculation.domain.PunchDecisio
 import com.lucasbdourado.autotimemarking.modules.calculation.domain.WorkdayState;
 import com.lucasbdourado.autotimemarking.modules.calculation.service.MarkingCalculatorService;
 import com.lucasbdourado.autotimemarking.modules.configuration.infrastructure.config.BmaquiosqueProperties;
+import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.model.DiscordUserProfile;
+import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.port.DiscordUserProfileRepository;
 import com.lucasbdourado.autotimemarking.modules.notification.domain.model.NotificationType;
 import com.lucasbdourado.autotimemarking.modules.notification.domain.port.NotificationPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,6 +39,9 @@ class MarkingWorkflowOrchestratorTest {
     @Mock
     private NotificationPort notificationPort;
 
+    @Mock
+    private DiscordUserProfileRepository userProfileRepository;
+
     private BmaquiosqueProperties properties;
     private MarkingWorkflowOrchestrator orchestrator;
 
@@ -46,7 +52,15 @@ class MarkingWorkflowOrchestratorTest {
         properties.setPassword("passTest");
         properties.setTimezone("America/Sao_Paulo");
 
-        orchestrator = new MarkingWorkflowOrchestrator(timeClockClient, calculatorService, properties, notificationPort);
+        lenient().when(userProfileRepository.findAllActiveProfiles()).thenReturn(Collections.emptyList());
+
+        orchestrator = new MarkingWorkflowOrchestrator(
+                timeClockClient,
+                calculatorService,
+                properties,
+                notificationPort,
+                userProfileRepository
+        );
     }
 
     @Test
@@ -61,7 +75,7 @@ class MarkingWorkflowOrchestratorTest {
                 LocalTime.of(14, 0),
                 "Lunch time reached"
         );
-        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), eq(properties)))
+        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), any(BmaquiosqueProperties.class)))
                 .thenReturn(decision);
 
         orchestrator.executeMarkingCycle();
@@ -80,7 +94,7 @@ class MarkingWorkflowOrchestratorTest {
         when(timeClockClient.retrieveDailyMarkings("userTest", "passTest")).thenReturn(times);
 
         PunchDecision decision = PunchDecision.noPunch("Waiting for lunch time");
-        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), eq(properties)))
+        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), any(BmaquiosqueProperties.class)))
                 .thenReturn(decision);
 
         orchestrator.executeMarkingCycle();
@@ -101,7 +115,7 @@ class MarkingWorkflowOrchestratorTest {
                 LocalTime.of(18, 0),
                 "Exit time reached"
         );
-        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), eq(properties)))
+        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), any(BmaquiosqueProperties.class)))
                 .thenReturn(decision);
 
         doThrow(new RuntimeException("BMA Quiosque unavailable"))
@@ -114,5 +128,27 @@ class MarkingWorkflowOrchestratorTest {
                 "EXIT".equals(event.stageName()) &&
                 event.message().contains("BMA Quiosque unavailable")
         ));
+    }
+
+    @Test
+    @DisplayName("Should execute marking cycle for active database user profiles")
+    void executeMarkingCycle_withActiveDatabaseProfiles_executesCycleForEachProfile() throws Exception {
+        DiscordUserProfile profile1 = new DiscordUserProfile("discord-1");
+        profile1.setBmaUsername("user1");
+        profile1.setBmaPassword("pass1");
+
+        DiscordUserProfile profile2 = new DiscordUserProfile("discord-2");
+        profile2.setBmaUsername("user2");
+        profile2.setBmaPassword("pass2");
+
+        when(userProfileRepository.findAllActiveProfiles()).thenReturn(List.of(profile1, profile2));
+        when(timeClockClient.retrieveDailyMarkings(anyString(), anyString())).thenReturn(Collections.emptyList());
+        when(calculatorService.evaluateDecision(any(WorkdayState.class), any(LocalTime.class), any(BmaquiosqueProperties.class)))
+                .thenReturn(PunchDecision.noPunch("No punch required"));
+
+        orchestrator.executeMarkingCycle();
+
+        verify(timeClockClient).retrieveDailyMarkings("user1", "pass1");
+        verify(timeClockClient).retrieveDailyMarkings("user2", "pass2");
     }
 }

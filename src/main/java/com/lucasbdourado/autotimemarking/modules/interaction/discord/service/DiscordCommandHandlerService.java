@@ -1,29 +1,34 @@
 package com.lucasbdourado.autotimemarking.modules.interaction.discord.service;
 
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.model.DiscordUserProfile;
+import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.port.DiscordUserProfileRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class DiscordCommandHandlerService {
 
-    private final Map<String, DiscordUserProfile> userProfiles = new ConcurrentHashMap<>();
+    private final DiscordUserProfileRepository userProfileRepository;
+
+    public DiscordCommandHandlerService(DiscordUserProfileRepository userProfileRepository) {
+        this.userProfileRepository = userProfileRepository;
+    }
 
     public DiscordUserProfile registerUser(String discordUserId) {
-        return userProfiles.computeIfAbsent(discordUserId, DiscordUserProfile::new);
+        return userProfileRepository.findByDiscordUserId(discordUserId)
+                .orElseGet(() -> userProfileRepository.save(new DiscordUserProfile(discordUserId)));
     }
 
     public Optional<DiscordUserProfile> findUser(String discordUserId) {
-        return Optional.ofNullable(userProfiles.get(discordUserId));
+        return userProfileRepository.findByDiscordUserId(discordUserId);
     }
 
     public String setCredentials(String discordUserId, String bmaUsername, String bmaPassword) {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setBmaUsername(bmaUsername);
         profile.setBmaPassword(bmaPassword);
+        userProfileRepository.save(profile);
         return "Credenciais do usuário '" + bmaUsername + "' do BMAquiosque atualizadas com sucesso.";
     }
 
@@ -35,6 +40,7 @@ public class DiscordCommandHandlerService {
         if (jitterMinutes != null && jitterMinutes >= 0) {
             profile.setJitterMinutes(jitterMinutes);
         }
+        userProfileRepository.save(profile);
         return "Configuração atualizada: Horário Máximo de Entrada = " + profile.getMaxEntryTime() +
                 ", Variação = " + profile.getJitterMinutes() + " minutos.";
     }
@@ -42,12 +48,14 @@ public class DiscordCommandHandlerService {
     public String pauseAutomation(String discordUserId) {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setActive(false);
+        userProfileRepository.save(profile);
         return "Automação PAUSADA para o seu usuário.";
     }
 
     public String resumeAutomation(String discordUserId) {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setActive(true);
+        userProfileRepository.save(profile);
         return "Automação RETOMADA para o seu usuário.";
     }
 

@@ -8,3 +8,5 @@
 | 004 | Discord Bot Interface | [004-discord-bot-interface.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/004-discord-bot-interface.md) | Implemented & Verified |
 | 005 | Notification System | [005-notification-system.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/005-notification-system.md) | Implemented & Verified |
 | 006 | User Interaction Translation | [006-user-interaction-translation.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/006-user-interaction-translation.md) | Implemented & Verified |
+| 007 | Database Credentials & User Profile | [007-database-credentials-and-user-profile.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/007-database-credentials-and-user-profile.md) | Implemented & Verified |
+

@@ -1,22 +1,29 @@
 package com.lucasbdourado.autotimemarking.modules.interaction.discord.service;
 
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.model.DiscordUserProfile;
+import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.port.DiscordUserProfileRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiscordCommandHandlerServiceTest {
 
     private DiscordCommandHandlerService service;
+    private DiscordUserProfileRepository repository;
     private static final String USER_ID = "discord-123456";
 
     @BeforeEach
     void setUp() {
-        service = new DiscordCommandHandlerService();
+        repository = new InMemoryDiscordUserProfileRepository();
+        service = new DiscordCommandHandlerService(repository);
     }
 
     @Test
@@ -89,5 +96,30 @@ class DiscordCommandHandlerServiceTest {
     void shouldReturnUnregisteredMessage() {
         String status = service.getStatus("unknown-user");
         assertTrue(status.contains("Usuário não registrado"));
+    }
+
+    private static class InMemoryDiscordUserProfileRepository implements DiscordUserProfileRepository {
+        private final Map<String, DiscordUserProfile> map = new HashMap<>();
+
+        @Override
+        public DiscordUserProfile save(DiscordUserProfile userProfile) {
+            map.put(userProfile.getDiscordUserId(), userProfile);
+            return userProfile;
+        }
+
+        @Override
+        public Optional<DiscordUserProfile> findByDiscordUserId(String discordUserId) {
+            return Optional.ofNullable(map.get(discordUserId));
+        }
+
+        @Override
+        public List<DiscordUserProfile> findAllActiveProfiles() {
+            return map.values().stream().filter(DiscordUserProfile::isActive).collect(Collectors.toList());
+        }
+
+        @Override
+        public void deleteByDiscordUserId(String discordUserId) {
+            map.remove(discordUserId);
+        }
     }
 }
