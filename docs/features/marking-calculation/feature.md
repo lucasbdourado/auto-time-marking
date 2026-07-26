@@ -2,9 +2,9 @@
 
 ## Status
 
-Status: Draft
+Status: Confirmed
 
-Last updated: 2026-07-13
+Last updated: 2026-07-26
 
 Owner or primary stakeholder: Lucas Dourado
 
@@ -16,22 +16,27 @@ Auto Time Marking
 
 | Source | Location or Reference | Type | Status | Notes |
 | --- | --- | --- | --- | --- |
-| Full Product PRD | docs/product/auto-time-marking/full-product-prd.md | Full Product PRD | Confirmed | Approved 2026-07-13 |
-| MVP PRD | docs/product/auto-time-marking/mvp-prd.md | MVP PRD | Confirmed | Approved 2026-07-13 |
-| Project Planning | docs/planning/auto-time-marking/project-planning.md | Planning | Confirmed | Approved 2026-07-13 |
+| Full Product PRD | [full-product-prd.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/product/auto-time-marking/full-product-prd.md) | Full Product PRD | Confirmed | Approved 2026-07-13 |
+| MVP PRD | [mvp-prd.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/product/auto-time-marking/mvp-prd.md) | MVP PRD | Confirmed | Approved 2026-07-13 |
+| Project Planning | [project-planning.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/planning/auto-time-marking/project-planning.md) | Planning | Confirmed | Approved 2026-07-13 |
+| Technology Definition | [technology-definition.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/architecture/auto-time-marking/technology-definition.md) | Technology Definition | Confirmed | Approved 2026-07-13 |
 
 ## Feature Goal
-Formulate the time calculation logic to determine which workday punches (entry, lunch-out, lunch-return, exit) are pending, compute their target times based on rules, and apply configured random jitter.
+
+Formulate the time calculation logic to determine which workday punches (entry, lunch-out, lunch-return, exit) are pending, compute their target times based on business rules (8h45 effective work, max entry time, 6h max work before lunch, 1h-2h lunch duration), and apply configured random time jitter.
 
 ## User Value
-Ensures that all daily registrations total exactly 8h45 of work time, respect variable lunch durations, and look natural to prevent system detection.
+
+Ensures that all daily registrations total exactly 8h45 of work time, respect variable lunch durations, and look natural to prevent automated system detection.
 
 ## Related PRD Capabilities
+
 | Capability ID | Capability | Source |
 | --- | --- | --- |
 | CAP-003 | Marking Calculation Logic | MVP PRD / Full Product PRD |
 
 ## Related PRD Features
+
 | Feature ID | Feature | Source | Priority |
 | --- | --- | --- | --- |
 | MVP-F-008 | Entry marking at max entry time if no manual exists | MVP PRD | Must |
@@ -42,47 +47,63 @@ Ensures that all daily registrations total exactly 8h45 of work time, respect va
 | MVP-F-013 | Configurable time jitter per user | MVP PRD | Must |
 
 ## Related User Stories
+
 | User Story ID | User Story | Source |
 | --- | --- | --- |
 | MVP-US-002 | As an employee, I want the system to use my actual entry time... | MVP PRD |
 | MVP-US-003 | As an employee, I want the system to add time variation... | MVP PRD |
 
 ## Expected Outcome
-The engine inputs a list of today's existing markings and output decisions: which marking type is next, what is its target time, and whether the current time matches that target time (including a randomized jitter offset).
+
+The calculation engine processes today's existing markings retrieved from BMAquiosque and produces concrete punch decisions: which marking type is next (ENTRY, LUNCH_OUT, LUNCH_RETURN, EXIT, or NONE), what is its target trigger time, whether current time has reached or passed that target (with jitter), and when all 4 markings are completed.
 
 ## Scope
-- Entry marking timing: Triggers if current time >= max entry time and no entry exists.
-- Lunch-out timing: Scheduled at entry time + 6 hours.
-- Lunch-return timing: Scheduled at lunch-out time + 1 hour (default) or respects actual return.
-- Exit timing calculation: Calculates exit = entry + actual lunch duration + 8h45.
-- Jitter addition: Injects random offset within the user's config range (e.g. ±5 min).
-- Recalculation logic: Handles shifts in lunch return to recalculate exit.
+
+- **Entry marking timing**: Triggers if current time >= max entry time and no entry marking exists.
+- **Lunch-out timing**: Scheduled at entry time + 6 hours.
+- **Lunch-return timing**: Scheduled at lunch-out time + 1 hour (default) or respects actual return.
+- **Exit timing calculation**: Calculates exit = entry + actual lunch duration + 8h45 work.
+- **Jitter addition**: Injects random offset within the user's config range (e.g., ±5 min).
+- **Recalculation logic**: Handles shifts in lunch return to dynamically adjust exit target time.
+- **Workflow Orchestration**: Connects `TimeClockClient`, calculation logic, and jitter generation to implement `MarkingWorkflow`.
 
 ## Out of Scope
+
 - Flexible shifts spanning past midnight.
-- Support for overtime accumulation rules.
+- Overtime calculation or accumulation rules.
+- Direct interaction with HTML/Playwright (handled by `bmaquiosque-automation`).
 
 ## Dependencies
+
 | Dependency | Type | Required For | Status | Notes |
 | --- | --- | --- | --- | --- |
-| Marking lists | Feature | Evaluating status | Confirmed | Supplied by `bmaquiosque-automation` |
+| `single-user-configuration` | Feature | Configuration loading | Confirmed | Provides `BmaquiosqueProperties` |
+| `activity-scheduler` | Feature | Workflow interface | Confirmed | Defines `MarkingWorkflow` |
+| `bmaquiosque-automation` | Feature | Status parsing and punch submission | Confirmed | Provides `TimeClockClient` |
 
 ## Risks
+
 | Risk | Impact | Likelihood | Mitigation or Follow-Up | Status |
 | --- | --- | --- | --- | --- |
-| Double marking due to incorrect calculation state | High | Low | Ensure the state logic checks the exact presence of markings in BMAquiosque before making decisions. | Open |
-| Timezone conversion bugs | Medium | Low | Standardize all internal calculations on a single local zone (e.g., America/Sao_Paulo). | Open |
+| Double marking due to incorrect state evaluation | High | Low | Explicitly evaluate existing punches retrieved from BMAquiosque before deciding to punch. | Open |
+| Timezone conversion bugs | Medium | Low | Standardize all calculations using `bmaquiosque.timezone` (`ZoneId`). | Open |
 
 ## Feature Completion Criteria
+
 - [ ] Calculations cover all 4 punch stages correctly.
-- [ ] Variable lunch calculation (up to 2h) correctly adjusts exit target.
+- [ ] Variable lunch calculation (1h to 2h) correctly adjusts exit target.
 - [ ] Jitter randomizer applies values within configured bounds.
-- [ ] High unit-test coverage of calculation matrices.
+- [ ] Orchestration implements `MarkingWorkflow` and coordinates `TimeClockClient` calls.
+- [ ] High unit-test coverage across all business rule permutations.
 
 ## Readiness Notes for Tech Spec
-- Map the state transitions and calculations with precise Gherkin/logic specifications.
+
+- Map state transitions, calculation matrices, DTO models, and `MarkingWorkflow` implementation spec.
 
 ## Inputs for Create Tasks
-- Create task for workday calculation engine algorithm.
-- Create task for time jitter application helper.
-- Create task for timezone utility normalizer.
+
+- Create task for domain models (`MarkingType`, `MarkingRecord`, `PunchDecision`).
+- Create task for calculation engine (`MarkingCalculatorService`).
+- Create task for jitter application helper (`TimeJitterService`).
+- Create task for `MarkingWorkflow` orchestrator (`MarkingWorkflowOrchestrator`).
+- Create task for unit and integration testing suites.
