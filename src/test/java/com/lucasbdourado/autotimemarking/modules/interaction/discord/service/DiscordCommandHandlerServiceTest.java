@@ -120,11 +120,25 @@ class DiscordCommandHandlerServiceTest {
     }
 
     @Test
+    @DisplayName("Should register punch and return workday summary embed")
+    void shouldPunchAndGetWorkdaySummaryEmbed() throws Exception {
+        service.setCredentials(USER_ID, "alice.smith", "pass456");
+        timeClockClient.dailyMarkings = List.of(LocalTime.of(8, 0));
+
+        MessageEmbed embed = service.punchAndGetWorkdaySummaryEmbed(USER_ID);
+
+        assertNotNull(embed);
+        assertTrue(timeClockClient.punchRegistered);
+        assertTrue(embed.getTitle().contains("Resumo do ponto"));
+    }
+
+    @Test
     @DisplayName("Should throw exception when getting summary embed for user without credentials")
     void shouldThrowExceptionWhenNoCredentials() {
         service.registerUser(USER_ID);
 
         assertThrows(IllegalArgumentException.class, () -> service.getWorkdaySummaryEmbed(USER_ID));
+        assertThrows(IllegalArgumentException.class, () -> service.punchAndGetWorkdaySummaryEmbed(USER_ID));
     }
 
     private static class InMemoryDiscordUserProfileRepository implements DiscordUserProfileRepository {
@@ -154,6 +168,7 @@ class DiscordCommandHandlerServiceTest {
 
     private static class StubTimeClockClient implements TimeClockClient {
         List<LocalTime> dailyMarkings = List.of();
+        boolean punchRegistered = false;
 
         @Override
         public List<LocalTime> retrieveDailyMarkings(String username, String password) {
@@ -162,6 +177,7 @@ class DiscordCommandHandlerServiceTest {
 
         @Override
         public void registerMarking(String username, String password) {
+            punchRegistered = true;
         }
     }
 }

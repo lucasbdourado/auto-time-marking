@@ -50,17 +50,17 @@ public class DiscordBotInitializer {
         if (jda == null) return;
 
         var commandsList = java.util.List.of(
-                Commands.slash("register", "Registre sua conta para marcação automática de ponto"),
-                Commands.slash("credentials", "Configure suas credenciais do BMAquiosque")
-                        .addOption(OptionType.STRING, "username", "Usuário do BMAquiosque", true)
-                        .addOption(OptionType.STRING, "password", "Senha do BMAquiosque", true),
-                Commands.slash("config", "Configure os horários e preferências da automação")
-                        .addOption(OptionType.STRING, "max_entry", "Horário máximo de entrada (ex: 09:00)", false)
-                        .addOption(OptionType.INTEGER, "jitter", "Variação aleatória em minutos", false),
-                Commands.slash("pause", "Pausar a marcação automática de ponto"),
-                Commands.slash("resume", "Retomar a marcação automática de ponto"),
+                Commands.slash("registrar", "Registre sua conta para marcação automática de ponto"),
+                Commands.slash("credenciais", "Configure suas credenciais do BMAquiosque")
+                        .addOption(OptionType.STRING, "usuario", "Usuário do BMAquiosque", true)
+                        .addOption(OptionType.STRING, "senha", "Senha do BMAquiosque", true),
+                Commands.slash("configurar", "Configure os horários e preferências da automação")
+                        .addOption(OptionType.STRING, "horario_maximo", "Horário máximo de entrada (ex: 09:00)", false)
+                        .addOption(OptionType.INTEGER, "variacao", "Variação aleatória em minutos", false),
+                Commands.slash("pausar", "Pausar a marcação automática de ponto"),
+                Commands.slash("retomar", "Retomar a marcação automática de ponto"),
                 Commands.slash("status", "Verificar o status atual da automação e configurações"),
-                Commands.slash("ponto", "Exibe o resumo das marcações de ponto do dia atual"),
+                Commands.slash("ponto", "Registra a marcação de ponto e exibe o resumo atualizado"),
                 Commands.slash("resumo", "Exibe o resumo das marcações de ponto do dia atual")
         );
 

@@ -1,10 +1,12 @@
 package com.lucasbdourado.autotimemarking.modules.interaction.discord.infrastructure.jda;
 
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.service.DiscordCommandHandlerService;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageCreateAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.function.Consumer;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -37,6 +40,9 @@ class DiscordSlashCommandListenerTest {
     @Mock
     private InteractionHook interactionHook;
 
+    @Mock
+    private WebhookMessageCreateAction<net.dv8tion.jda.api.entities.Message> webhookAction;
+
     private DiscordSlashCommandListener listener;
 
     private static final String USER_ID = "discord-user-999";
@@ -48,12 +54,14 @@ class DiscordSlashCommandListenerTest {
         lenient().when(user.getId()).thenReturn(USER_ID);
         lenient().when(event.reply(anyString())).thenReturn(replyCallbackAction);
         lenient().when(replyCallbackAction.setEphemeral(anyBoolean())).thenReturn(replyCallbackAction);
+        lenient().when(interactionHook.sendMessageEmbeds(any(MessageEmbed.class))).thenReturn(webhookAction);
+        lenient().when(interactionHook.sendMessage(anyString())).thenReturn(webhookAction);
     }
 
     @Test
-    @DisplayName("Should handle /register command and return ephemeral response")
+    @DisplayName("Should handle /registrar command and return ephemeral response")
     void shouldHandleRegisterCommand() {
-        when(event.getName()).thenReturn("register");
+        when(event.getName()).thenReturn("registrar");
 
         listener.onSlashCommandInteraction(event);
 
@@ -63,15 +71,15 @@ class DiscordSlashCommandListenerTest {
     }
 
     @Test
-    @DisplayName("Should handle /credentials command with parameters and return ephemeral response")
+    @DisplayName("Should handle /credenciais command with parameters and return ephemeral response")
     void shouldHandleCredentialsCommand() {
-        when(event.getName()).thenReturn("credentials");
+        when(event.getName()).thenReturn("credenciais");
         OptionMapping userOpt = mock(OptionMapping.class);
         OptionMapping passOpt = mock(OptionMapping.class);
         when(userOpt.getAsString()).thenReturn("bma.user");
         when(passOpt.getAsString()).thenReturn("bma.pass");
-        when(event.getOption("username")).thenReturn(userOpt);
-        when(event.getOption("password")).thenReturn(passOpt);
+        when(event.getOption("usuario")).thenReturn(userOpt);
+        when(event.getOption("senha")).thenReturn(passOpt);
         when(commandHandlerService.setCredentials(USER_ID, "bma.user", "bma.pass")).thenReturn("Credentials updated");
 
         listener.onSlashCommandInteraction(event);
@@ -82,9 +90,9 @@ class DiscordSlashCommandListenerTest {
     }
 
     @Test
-    @DisplayName("Should handle /pause and /resume commands with ephemeral response")
+    @DisplayName("Should handle /pausar and /retomar commands with ephemeral response")
     void shouldHandlePauseAndResumeCommands() {
-        when(event.getName()).thenReturn("pause");
+        when(event.getName()).thenReturn("pausar");
         when(commandHandlerService.pauseAutomation(USER_ID)).thenReturn("Automação PAUSADA");
 
         listener.onSlashCommandInteraction(event);
@@ -108,9 +116,26 @@ class DiscordSlashCommandListenerTest {
     }
 
     @Test
-    @DisplayName("Should handle /ponto command using deferred reply")
+    @DisplayName("Should handle /ponto command by triggering punch and returning summary embed")
     void shouldHandlePontoCommandWithDeferredReply() throws Exception {
         when(event.getName()).thenReturn("ponto");
+        when(event.deferReply(true)).thenReturn(replyCallbackAction);
+        doAnswer(invocation -> {
+            Consumer<InteractionHook> consumer = invocation.getArgument(0);
+            consumer.accept(interactionHook);
+            return null;
+        }).when(replyCallbackAction).queue(any());
+
+        listener.onSlashCommandInteraction(event);
+
+        verify(event).deferReply(true);
+        verify(commandHandlerService).punchAndGetWorkdaySummaryEmbed(USER_ID);
+    }
+
+    @Test
+    @DisplayName("Should handle /resumo command by querying daily summary embed")
+    void shouldHandleResumoCommandWithDeferredReply() throws Exception {
+        when(event.getName()).thenReturn("resumo");
         when(event.deferReply(true)).thenReturn(replyCallbackAction);
         doAnswer(invocation -> {
             Consumer<InteractionHook> consumer = invocation.getArgument(0);

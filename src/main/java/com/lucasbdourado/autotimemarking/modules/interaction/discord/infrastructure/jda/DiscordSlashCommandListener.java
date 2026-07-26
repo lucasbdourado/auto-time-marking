@@ -28,7 +28,19 @@ public class DiscordSlashCommandListener extends ListenerAdapter {
         logger.info("Received slash command '/{}' from Discord user '{}'", commandName, userId);
 
         switch (commandName) {
-            case "ponto", "resumo" -> {
+            case "ponto" -> {
+                event.deferReply(true).queue(hook -> {
+                    try {
+                        MessageEmbed embed = commandHandlerService.punchAndGetWorkdaySummaryEmbed(userId);
+                        hook.sendMessageEmbeds(embed).queue();
+                    } catch (Exception e) {
+                        logger.error("Failed to register punch for user {}: {}", userId, e.getMessage(), e);
+                        hook.sendMessage("Erro ao registrar ponto: " + e.getMessage()).queue();
+                    }
+                });
+                return;
+            }
+            case "resumo" -> {
                 event.deferReply(true).queue(hook -> {
                     try {
                         MessageEmbed embed = commandHandlerService.getWorkdaySummaryEmbed(userId);
@@ -40,28 +52,36 @@ public class DiscordSlashCommandListener extends ListenerAdapter {
                 });
                 return;
             }
-            case "register" -> {
+            case "registrar", "register" -> {
                 commandHandlerService.registerUser(userId);
-                reply(event, "Usuário registrado com sucesso. Use /credentials para configurar seu login do BMAquiosque.");
+                reply(event, "Usuário registrado com sucesso. Use /credenciais para configurar seu login do BMAquiosque.");
             }
-            case "credentials" -> {
-                OptionMapping userOpt = event.getOption("username");
-                OptionMapping passOpt = event.getOption("password");
+            case "credenciais", "credentials" -> {
+                OptionMapping userOpt = event.getOption("usuario");
+                if (userOpt == null) userOpt = event.getOption("username");
+
+                OptionMapping passOpt = event.getOption("senha");
+                if (passOpt == null) passOpt = event.getOption("password");
+
                 if (userOpt == null || passOpt == null) {
                     reply(event, "Erro: Os parâmetros de usuário e senha são obrigatórios.");
                 } else {
                     reply(event, commandHandlerService.setCredentials(userId, userOpt.getAsString(), passOpt.getAsString()));
                 }
             }
-            case "config" -> {
-                OptionMapping maxEntryOpt = event.getOption("max_entry");
-                OptionMapping jitterOpt = event.getOption("jitter");
+            case "configurar", "config" -> {
+                OptionMapping maxEntryOpt = event.getOption("horario_maximo");
+                if (maxEntryOpt == null) maxEntryOpt = event.getOption("max_entry");
+
+                OptionMapping jitterOpt = event.getOption("variacao");
+                if (jitterOpt == null) jitterOpt = event.getOption("jitter");
+
                 String maxEntry = maxEntryOpt != null ? maxEntryOpt.getAsString() : null;
                 Integer jitter = jitterOpt != null ? jitterOpt.getAsInt() : null;
                 reply(event, commandHandlerService.configureSchedule(userId, maxEntry, jitter));
             }
-            case "pause" -> reply(event, commandHandlerService.pauseAutomation(userId));
-            case "resume" -> reply(event, commandHandlerService.resumeAutomation(userId));
+            case "pausar", "pause" -> reply(event, commandHandlerService.pauseAutomation(userId));
+            case "retomar", "resume" -> reply(event, commandHandlerService.resumeAutomation(userId));
             case "status" -> reply(event, commandHandlerService.getStatus(userId));
             default -> reply(event, "Comando desconhecido: " + commandName);
         }

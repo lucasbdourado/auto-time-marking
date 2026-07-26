@@ -80,7 +80,7 @@ public class DiscordCommandHandlerService {
     public String getStatus(String discordUserId) {
         Optional<DiscordUserProfile> profileOpt = findUser(discordUserId);
         if (profileOpt.isEmpty()) {
-            return "Usuário não registrado. Use /register para criar seu perfil.";
+            return "Usuário não registrado. Use /registrar para criar seu perfil.";
         }
         DiscordUserProfile profile = profileOpt.get();
         return String.format(
@@ -95,10 +95,25 @@ public class DiscordCommandHandlerService {
     public MessageEmbed getWorkdaySummaryEmbed(String discordUserId) throws Exception {
         Optional<DiscordUserProfile> profileOpt = findUser(discordUserId);
         if (profileOpt.isEmpty() || profileOpt.get().getBmaUsername() == null || profileOpt.get().getBmaUsername().isBlank()) {
-            throw new IllegalArgumentException("Usuário não registrado ou credenciais do BMAquiosque não configuradas. Use /register e /credentials primeiro.");
+            throw new IllegalArgumentException("Usuário não registrado ou credenciais do BMAquiosque não configuradas. Use /registrar e /credenciais primeiro.");
         }
 
         DiscordUserProfile profile = profileOpt.get();
+        List<LocalTime> times = timeClockClient.retrieveDailyMarkings(profile.getBmaUsername(), profile.getBmaPassword());
+        WorkdaySummary summary = summaryService.calculateSummary(times, LocalDate.now(), LocalTime.now());
+
+        return embedBuilder.buildWorkDaySummaryEmbed(summary);
+    }
+
+    public MessageEmbed punchAndGetWorkdaySummaryEmbed(String discordUserId) throws Exception {
+        Optional<DiscordUserProfile> profileOpt = findUser(discordUserId);
+        if (profileOpt.isEmpty() || profileOpt.get().getBmaUsername() == null || profileOpt.get().getBmaUsername().isBlank()) {
+            throw new IllegalArgumentException("Usuário não registrado ou credenciais do BMAquiosque não configuradas. Use /registrar e /credenciais primeiro.");
+        }
+
+        DiscordUserProfile profile = profileOpt.get();
+        timeClockClient.registerMarking(profile.getBmaUsername(), profile.getBmaPassword());
+
         List<LocalTime> times = timeClockClient.retrieveDailyMarkings(profile.getBmaUsername(), profile.getBmaPassword());
         WorkdaySummary summary = summaryService.calculateSummary(times, LocalDate.now(), LocalTime.now());
 
