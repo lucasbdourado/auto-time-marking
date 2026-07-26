@@ -56,7 +56,7 @@ public class DiscordBotInitializer {
                         .addOption(OptionType.STRING, "password", "Senha do BMAquiosque", true),
                 Commands.slash("config", "Configure os horários e preferências da automação")
                         .addOption(OptionType.STRING, "max_entry", "Horário máximo de entrada (ex: 09:00)", false)
-                        .addOption(OptionType.INTEGER, "jitter", "Variação aleatória (jitter) em minutos", false),
+                        .addOption(OptionType.INTEGER, "jitter", "Variação aleatória em minutos", false),
                 Commands.slash("pause", "Pausar a marcação automática de ponto"),
                 Commands.slash("resume", "Retomar a marcação automática de ponto"),
                 Commands.slash("status", "Verificar o status atual da automação e configurações")

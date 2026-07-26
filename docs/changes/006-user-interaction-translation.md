@@ -95,7 +95,7 @@ Crucially, **Discord Slash Command names and option names will NOT change** (e.g
 | `password` option desc | BMA password | Senha do BMAquiosque |
 | `/config` description | Configure schedule settings | Configure os horários e preferências da automação |
 | `max_entry` option desc | Max entry time e.g. 09:00 | Horário máximo de entrada (ex: 09:00) |
-| `jitter` option desc | Jitter variation in minutes | Variação aleatória (jitter) em minutos |
+| `jitter` option desc | Jitter variation | Variação aleatória em minutos |
 | `/pause` description | Pause auto time marking | Pausar a marcação automática de ponto |
 | `/resume` description | Resume auto time marking | Retomar a marcação automática de ponto |
 | `/status` description | Check current automation status and schedule | Verificar o status atual da automação e configurações |
@@ -106,11 +106,11 @@ Crucially, **Discord Slash Command names and option names will NOT change** (e.g
 | Register Success | User registered successfully. Use /credentials to configure your BMAquiosque login. | Usuário registrado com sucesso. Use /credentials para configurar seu login do BMAquiosque. |
 | Credentials Missing Param | Error: Username and password parameters are required. | Erro: Os parâmetros de usuário e senha são obrigatórios. |
 | Credentials Success | Credentials for BMAquiosque user '%s' updated successfully. | Credenciais do usuário '%s' do BMAquiosque atualizadas com sucesso. |
-| Config Success | Schedule updated: Max Entry Time = %s, Jitter = %d minutes. | Configuração atualizada: Horário Máximo de Entrada = %s, Jitter = %d minutos. |
+| Config Success | Schedule updated: Max Entry Time = %s, Jitter = %d minutes. | Configuração atualizada: Horário Máximo de Entrada = %s, Variação = %d minutos. |
 | Pause Automation | Automation PAUSED for your user. | Automação PAUSADA para o seu usuário. |
 | Resume Automation | Automation RESUMED for your user. | Automação RETOMADA para o seu usuário. |
 | Status Unregistered | User not registered. Use /register to create your profile. | Usuário não registrado. Use /register para criar seu perfil. |
-| Status Registered | User Status:\n- State: %s\n- BMA User: %s\n- Max Entry Time: %s\n- Jitter: %d min | Status do Usuário:\n- Estado: %s\n- Usuário BMA: %s\n- Horário Máx. Entrada: %s\n- Jitter: %d min |
+| Status Registered | User Status:\n- State: %s\n- BMA User: %s\n- Max Entry Time: %s\n- Jitter: %d min | Status do Usuário:\n- Estado: %s\n- Usuário BMA: %s\n- Horário Máx. Entrada: %s\n- Variação: %d min |
 | Unknown Command | Unknown command: %s | Comando desconhecido: %s |
 
 ## 8. Validation References & Regression Risks

@@ -36,7 +36,7 @@ public class DiscordCommandHandlerService {
             profile.setJitterMinutes(jitterMinutes);
         }
         return "Configuração atualizada: Horário Máximo de Entrada = " + profile.getMaxEntryTime() +
-                ", Jitter = " + profile.getJitterMinutes() + " minutos.";
+                ", Variação = " + profile.getJitterMinutes() + " minutos.";
     }
 
     public String pauseAutomation(String discordUserId) {
@@ -58,7 +58,7 @@ public class DiscordCommandHandlerService {
         }
         DiscordUserProfile profile = profileOpt.get();
         return String.format(
-                "Status do Usuário:\n- Estado: %s\n- Usuário BMA: %s\n- Horário Máx. Entrada: %s\n- Jitter: %d min",
+                "Status do Usuário:\n- Estado: %s\n- Usuário BMA: %s\n- Horário Máx. Entrada: %s\n- Variação: %d min",
                 profile.isActive() ? "ATIVO" : "PAUSADO",
                 profile.getBmaUsername() != null ? profile.getBmaUsername() : "Não configurado",
                 profile.getMaxEntryTime(),
