@@ -11,11 +11,11 @@
 
 ## Current Status
 
-Feature Specs Confirmed
+Feature `marking-calculation` Implemented & Verified
 
 ## Last Completed Step
 
-Generated full `feature-spec.md` documents for both Phase 2 features (`bmaquiosque-automation` and `marking-calculation`), including research context, confirmed facts vs assumptions, acceptance criteria, technical design, and implementation checklists.
+Completed implementation and full test suite verification of feature `marking-calculation` (domain models, calculation engine with variable lunch recalculation, time jitter service, workflow orchestrator, and unit test suite).
 
 ## Current Blocker
 
@@ -23,12 +23,12 @@ None.
 
 ## Required Next Action
 
-Select feature spec checklist item to execute (`bmaquiosque-automation` task 2 or `marking-calculation` task 1).
+Execute remaining task from `docs/features/bmaquiosque-automation/feature-spec.md` (task 2: integration test validation).
 
 ## Safe Resume Point
 
-Review `docs/features/bmaquiosque-automation/feature-spec.md` and `docs/features/marking-calculation/feature-spec.md`.
+`docs/features/bmaquiosque-automation/feature-spec.md`
 
 ## Last Updated
 
-`2026-07-26 00:33:00 -03:00`
+`2026-07-26 00:39:00 -03:00`

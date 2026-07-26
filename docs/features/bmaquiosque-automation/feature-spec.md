@@ -93,31 +93,31 @@ The `bmaquiosque-automation` feature provides the automated browser bridge conne
   - Goal: Add `com.microsoft.playwright:playwright` to `pom.xml`.
   - Acceptance: `mvn clean compile` succeeds.
   - Depends on: None
-- [ ] **2. Extend BmaquiosqueProperties with Selectors**
+- [x] **2. Extend BmaquiosqueProperties with Selectors**
   - Goal: Add `url` and `Selectors` inner properties class.
   - Acceptance: Properties bind cleanly from `application.properties`.
   - Depends on: 1
-- [ ] **3. Update Properties Validator and Tests**
+- [x] **3. Update Properties Validator and Tests**
   - Goal: Enforce validation rules for URL and selector strings in `BmaquiosquePropertiesValidator`.
   - Acceptance: Invalid URLs or blank selectors reject boot; unit tests pass.
   - Depends on: 2
-- [ ] **4. Implement TimeClockClient Interface**
+- [x] **4. Implement TimeClockClient Interface**
   - Goal: Define `TimeClockClient` domain interface.
   - Acceptance: Package `com.lucasbdourado.autotimemarking.modules.automation.domain` compiles cleanly.
   - Depends on: 1
-- [ ] **5. Implement PlaywrightTimeClockClient**
+- [x] **5. Implement PlaywrightTimeClockClient**
   - Goal: Implement headless browser navigation, login, scraping, punching, and screenshot capture.
   - Acceptance: Playwright opens, interacts, captures screenshots on error, and closes cleanly.
   - Depends on: 3, 4
-- [ ] **6. Implement RetryingTimeClockClient Decorator**
+- [x] **6. Implement RetryingTimeClockClient Decorator**
   - Goal: Implement Decorator wrapping `TimeClockClient` to retry up to 3 times with a 5-minute delay.
   - Acceptance: Retries on transient exceptions; unit tests verify retry loop.
   - Depends on: 4
-- [ ] **7. Implement Automation Unit & Integration Tests**
+- [x] **7. Implement Automation Unit & Integration Tests**
   - Goal: Write unit tests with Mockito mocks for client decorator and properties validation.
   - Acceptance: `mvn clean test` passes with zero failures.
   - Depends on: 5, 6
-- [ ] **8. Verification Task**
+- [x] **8. Verification Task**
   - Goal: Verify whole feature build and tests.
   - Acceptance: `mvn clean compile test` passes with `BUILD SUCCESS`.
   - Depends on: 1 through 7

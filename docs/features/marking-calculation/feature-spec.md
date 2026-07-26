@@ -97,27 +97,27 @@ The `marking-calculation` feature implements the core business calculation engin
   - Out of bounds jitter values (mitigated by `TimeJitterService` range checks).
 
 ## 9. Implementation Checklist
-- [ ] **1. Define Marking Domain Models**
+- [x] **1. Define Marking Domain Models**
   - Goal: Define `MarkingType`, `MarkingRecord`, `WorkdayState`, `PunchDecision`.
   - Acceptance: Package compiles cleanly.
   - Depends on: None
-- [ ] **2. Implement Workday Calculation Engine**
+- [x] **2. Implement Workday Calculation Engine**
   - Goal: Implement `MarkingCalculatorService` with 8h45 work, 6h lunch limit, and variable lunch exit recalculation.
   - Acceptance: Engine evaluates all 4 stages accurately.
   - Depends on: 1
-- [ ] **3. Implement Time Jitter Service**
+- [x] **3. Implement Time Jitter Service**
   - Goal: Implement `TimeJitterService` for bounded random time offsets.
   - Acceptance: Random offset is strictly within configured range.
   - Depends on: 1
-- [ ] **4. Implement Marking Workflow Orchestrator**
+- [x] **4. Implement Marking Workflow Orchestrator**
   - Goal: Implement `MarkingWorkflowOrchestrator` implementing `MarkingWorkflow`.
   - Acceptance: Orchestrator fetches status, evaluates decision, and calls `TimeClockClient`.
   - Depends on: 1, 2, 3
-- [ ] **5. Write Calculation Unit Tests**
+- [x] **5. Write Calculation Unit Tests**
   - Goal: Create unit tests for calculation engine, jitter service, and orchestrator.
   - Acceptance: `mvn clean test` passes with 100% success rate.
   - Depends on: 2, 3, 4
-- [ ] **6. Verification Task**
+- [x] **6. Verification Task**
   - Goal: Run complete build and test suite.
   - Acceptance: `mvn clean compile test` passes with `BUILD SUCCESS`.
   - Depends on: 1 through 5
