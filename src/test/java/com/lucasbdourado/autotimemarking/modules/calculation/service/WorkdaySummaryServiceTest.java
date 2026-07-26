@@ -62,6 +62,8 @@ class WorkdaySummaryServiceTest {
         assertEquals(240, summary.workedMinutes()); // 4h = 240 min
         assertEquals(285, summary.remainingMinutes()); // 525 - 240 = 285 min
         assertEquals(LocalTime.of(17, 45), summary.estimatedExitTime()); // 12:00 + 1h lunch (13:00) + 4h45 (285m) = 17:45
+        assertEquals(LocalTime.of(14, 0), summary.maxLunchReturnTime()); // 12:00 + 2h
+        assertEquals(LocalTime.of(20, 0), summary.maxExitTime()); // 14:00 + 6h
         assertEquals("Em intervalo de almoço", summary.status());
 
         String formatted = service.formatMarkings(times);
@@ -80,6 +82,8 @@ class WorkdaySummaryServiceTest {
         assertEquals(360, summary.workedMinutes());
         assertEquals(165, summary.remainingMinutes()); // 525 - 360 = 165 min
         assertEquals(LocalTime.of(17, 45), summary.estimatedExitTime()); // 13:00 + 4h45 = 17:45
+        assertEquals(LocalTime.of(14, 0), summary.maxLunchReturnTime()); // 12:00 + 2h
+        assertEquals(LocalTime.of(19, 0), summary.maxExitTime()); // 13:00 + 6h
         assertTrue(summary.status().contains("Em expediente"));
 
         String formatted = service.formatMarkings(times);
@@ -97,6 +101,7 @@ class WorkdaySummaryServiceTest {
         assertEquals(525, summary.workedMinutes());
         assertEquals(0, summary.remainingMinutes());
         assertEquals(LocalTime.of(17, 45), summary.estimatedExitTime());
+        assertEquals(LocalTime.of(19, 0), summary.maxExitTime());
         assertEquals("Jornada concluída", summary.status());
 
         String formatted = service.formatMarkings(times);

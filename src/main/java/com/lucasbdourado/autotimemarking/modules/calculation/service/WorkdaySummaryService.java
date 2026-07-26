@@ -14,6 +14,8 @@ public class WorkdaySummaryService {
 
     public static final int WORK_MINUTES_PER_DAY = 525; // 8h45 = 525 minutos
     public static final int DEFAULT_LUNCH_MINUTES = 60; // 1 hora
+    public static final int MAX_WORK_CONTINUOUS_HOURS = 6;
+    public static final int MAX_LUNCH_HOURS = 2;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     public WorkdaySummary calculateSummary(List<LocalTime> times, LocalDate date, LocalTime currentTime) {
@@ -37,6 +39,9 @@ public class WorkdaySummaryService {
         LocalTime exitTime = null;
         String status;
 
+        LocalTime maxExitTime = null;
+        LocalTime maxLunchReturnTime = null;
+
         switch (count) {
             case 1 -> {
                 LocalTime entry = times.get(0);
@@ -53,6 +58,8 @@ public class WorkdaySummaryService {
                 workedMinutes = Duration.between(entry, lunchOut).toMinutes();
                 remainingMinutes = Math.max(0, WORK_MINUTES_PER_DAY - workedMinutes);
                 exitTime = lunchOut.plusMinutes(DEFAULT_LUNCH_MINUTES).plusMinutes(remainingMinutes);
+                maxLunchReturnTime = lunchOut.plusHours(MAX_LUNCH_HOURS);
+                maxExitTime = maxLunchReturnTime.plusHours(MAX_WORK_CONTINUOUS_HOURS);
                 status = "Em intervalo de almoço";
             }
             case 3 -> {
@@ -69,6 +76,8 @@ public class WorkdaySummaryService {
                 long remainingWork = Math.max(0, WORK_MINUTES_PER_DAY - firstPeriod);
                 remainingMinutes = Math.max(0, WORK_MINUTES_PER_DAY - workedMinutes);
                 exitTime = lunchReturn.plusMinutes(remainingWork);
+                maxLunchReturnTime = lunchOut.plusHours(MAX_LUNCH_HOURS);
+                maxExitTime = lunchReturn.plusHours(MAX_WORK_CONTINUOUS_HOURS);
                 status = "Em expediente (Retorno do almoço às " + lunchReturn.format(TIME_FORMATTER) + ")";
             }
             default -> {
@@ -82,6 +91,8 @@ public class WorkdaySummaryService {
                 workedMinutes = firstPeriod + secondPeriod;
                 remainingMinutes = Math.max(0, WORK_MINUTES_PER_DAY - workedMinutes);
                 exitTime = exit;
+                maxLunchReturnTime = lunchOut.plusHours(MAX_LUNCH_HOURS);
+                maxExitTime = lunchReturn.plusHours(MAX_WORK_CONTINUOUS_HOURS);
                 status = "Jornada concluída";
             }
         }
@@ -92,6 +103,8 @@ public class WorkdaySummaryService {
                 workedMinutes,
                 remainingMinutes,
                 exitTime,
+                maxExitTime,
+                maxLunchReturnTime,
                 status
         );
     }

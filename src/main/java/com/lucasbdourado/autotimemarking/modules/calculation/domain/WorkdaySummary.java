@@ -12,6 +12,8 @@ public record WorkdaySummary(
         long workedMinutes,
         long remainingMinutes,
         LocalTime estimatedExitTime,
+        LocalTime maxExitTime,
+        LocalTime maxLunchReturnTime,
         String status
 ) {
     public WorkdaySummary {
@@ -20,5 +22,16 @@ public record WorkdaySummary(
         } else {
             markings = Collections.emptyList();
         }
+    }
+
+    public WorkdaySummary(
+            LocalDate date,
+            List<LocalTime> markings,
+            long workedMinutes,
+            long remainingMinutes,
+            LocalTime estimatedExitTime,
+            String status
+    ) {
+        this(date, markings, workedMinutes, remainingMinutes, estimatedExitTime, null, null, status);
     }
 }

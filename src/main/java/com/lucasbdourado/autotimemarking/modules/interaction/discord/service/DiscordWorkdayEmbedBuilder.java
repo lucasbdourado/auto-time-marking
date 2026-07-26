@@ -33,6 +33,13 @@ public class DiscordWorkdayEmbedBuilder {
         embed.addField("**Tempo restante**", summaryService.formatMinutes(summary.remainingMinutes()), true);
         embed.addField("**Horário de saída**", summaryService.formatTime(summary.estimatedExitTime()), true);
 
+        if (summary.maxExitTime() != null) {
+            embed.addField("**Horário máximo de saída**", summaryService.formatTime(summary.maxExitTime()), true);
+        }
+        if (summary.maxLunchReturnTime() != null) {
+            embed.addField("**Retorno máximo do almoço**", summaryService.formatTime(summary.maxLunchReturnTime()), true);
+        }
+
         embed.setFooter("Auto Time Marking Engine", null);
 
         return embed.build();

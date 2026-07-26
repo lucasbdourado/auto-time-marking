@@ -33,6 +33,8 @@ class DiscordWorkdayEmbedBuilderTest {
                 525,
                 0,
                 LocalTime.of(17, 45),
+                LocalTime.of(19, 0),
+                LocalTime.of(14, 0),
                 "Jornada concluída"
         );
 
@@ -42,7 +44,7 @@ class DiscordWorkdayEmbedBuilderTest {
         assertEquals("Resumo do ponto - 26/07/2026", embed.getTitle());
         assertEquals(Color.GREEN, embed.getColor());
         assertNotNull(embed.getFields());
-        assertEquals(5, embed.getFields().size());
+        assertEquals(7, embed.getFields().size());
 
         assertEquals("**Data**", embed.getFields().get(0).getName());
         assertEquals("26/07/2026", embed.getFields().get(0).getValue());
@@ -58,5 +60,11 @@ class DiscordWorkdayEmbedBuilderTest {
 
         assertEquals("**Horário de saída**", embed.getFields().get(4).getName());
         assertEquals("17:45", embed.getFields().get(4).getValue());
+
+        assertEquals("**Horário máximo de saída**", embed.getFields().get(5).getName());
+        assertEquals("19:00", embed.getFields().get(5).getValue());
+
+        assertEquals("**Retorno máximo do almoço**", embed.getFields().get(6).getName());
+        assertEquals("14:00", embed.getFields().get(6).getValue());
     }
 }

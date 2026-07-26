@@ -74,6 +74,10 @@ public class DiscordBotInitializer {
                 logger.warn("Guild ID '{}' not found. Registered Slash Commands globally instead.", properties.getGuildId());
             }
         } else {
+            for (var guild : jda.getGuilds()) {
+                guild.updateCommands().addCommands(commandsList).queue();
+                logger.info("Registered Slash Commands instantly for Guild '{}' ({})", guild.getName(), guild.getId());
+            }
             jda.updateCommands().addCommands(commandsList).queue();
             logger.info("Registered Slash Commands globally.");
         }
