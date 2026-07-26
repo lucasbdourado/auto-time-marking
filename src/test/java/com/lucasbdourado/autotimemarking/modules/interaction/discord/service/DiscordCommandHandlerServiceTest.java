@@ -62,11 +62,11 @@ class DiscordCommandHandlerServiceTest {
         service.registerUser(USER_ID);
 
         String pauseMsg = service.pauseAutomation(USER_ID);
-        assertTrue(pauseMsg.contains("PAUSED"));
+        assertTrue(pauseMsg.contains("PAUSADA"));
         assertFalse(service.findUser(USER_ID).orElseThrow().isActive());
 
         String resumeMsg = service.resumeAutomation(USER_ID);
-        assertTrue(resumeMsg.contains("RESUMED"));
+        assertTrue(resumeMsg.contains("RETOMADA"));
         assertTrue(service.findUser(USER_ID).orElseThrow().isActive());
     }
 
@@ -78,7 +78,7 @@ class DiscordCommandHandlerServiceTest {
 
         String status = service.getStatus(USER_ID);
 
-        assertTrue(status.contains("ACTIVE"));
+        assertTrue(status.contains("ATIVO"));
         assertTrue(status.contains("alice.smith"));
         assertTrue(status.contains("09:15"));
         assertTrue(status.contains("3 min"));
@@ -88,6 +88,6 @@ class DiscordCommandHandlerServiceTest {
     @DisplayName("Should return unregistered message for unknown user status query")
     void shouldReturnUnregisteredMessage() {
         String status = service.getStatus("unknown-user");
-        assertTrue(status.contains("User not registered"));
+        assertTrue(status.contains("Usuário não registrado"));
     }
 }

@@ -30,13 +30,13 @@ public class DiscordSlashCommandListener extends ListenerAdapter {
         switch (commandName) {
             case "register" -> {
                 commandHandlerService.registerUser(userId);
-                replyMessage = "User registered successfully. Use /credentials to configure your BMAquiosque login.";
+                replyMessage = "Usuário registrado com sucesso. Use /credentials para configurar seu login do BMAquiosque.";
             }
             case "credentials" -> {
                 OptionMapping userOpt = event.getOption("username");
                 OptionMapping passOpt = event.getOption("password");
                 if (userOpt == null || passOpt == null) {
-                    replyMessage = "Error: Username and password parameters are required.";
+                    replyMessage = "Erro: Os parâmetros de usuário e senha são obrigatórios.";
                 } else {
                     replyMessage = commandHandlerService.setCredentials(userId, userOpt.getAsString(), passOpt.getAsString());
                 }
@@ -51,7 +51,7 @@ public class DiscordSlashCommandListener extends ListenerAdapter {
             case "pause" -> replyMessage = commandHandlerService.pauseAutomation(userId);
             case "resume" -> replyMessage = commandHandlerService.resumeAutomation(userId);
             case "status" -> replyMessage = commandHandlerService.getStatus(userId);
-            default -> replyMessage = "Unknown command: " + commandName;
+            default -> replyMessage = "Comando desconhecido: " + commandName;
         }
 
         event.reply(replyMessage)

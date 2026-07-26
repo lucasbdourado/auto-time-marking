@@ -50,16 +50,16 @@ public class DiscordBotInitializer {
         if (jda == null) return;
 
         var commandsList = java.util.List.of(
-                Commands.slash("register", "Register your account for auto time marking"),
-                Commands.slash("credentials", "Set your BMAquiosque login credentials")
-                        .addOption(OptionType.STRING, "username", "BMA username", true)
-                        .addOption(OptionType.STRING, "password", "BMA password", true),
-                Commands.slash("config", "Configure schedule settings")
-                        .addOption(OptionType.STRING, "max_entry", "Max entry time e.g. 09:00", false)
-                        .addOption(OptionType.INTEGER, "jitter", "Jitter variation in minutes", false),
-                Commands.slash("pause", "Pause auto time marking"),
-                Commands.slash("resume", "Resume auto time marking"),
-                Commands.slash("status", "Check current automation status and schedule")
+                Commands.slash("register", "Registre sua conta para marcação automática de ponto"),
+                Commands.slash("credentials", "Configure suas credenciais do BMAquiosque")
+                        .addOption(OptionType.STRING, "username", "Usuário do BMAquiosque", true)
+                        .addOption(OptionType.STRING, "password", "Senha do BMAquiosque", true),
+                Commands.slash("config", "Configure os horários e preferências da automação")
+                        .addOption(OptionType.STRING, "max_entry", "Horário máximo de entrada (ex: 09:00)", false)
+                        .addOption(OptionType.INTEGER, "jitter", "Variação aleatória (jitter) em minutos", false),
+                Commands.slash("pause", "Pausar a marcação automática de ponto"),
+                Commands.slash("resume", "Retomar a marcação automática de ponto"),
+                Commands.slash("status", "Verificar o status atual da automação e configurações")
         );
 
         if (properties.getGuildId() != null && !properties.getGuildId().isBlank()) {

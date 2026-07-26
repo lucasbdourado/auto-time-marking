@@ -2,25 +2,25 @@
 
 ## Current Feature / Change
 
-`005-notification-system`
+`006-user-interaction-translation`
 
 ## Current Change Spec
 
-- `docs/changes/005-notification-system.md`
+- `docs/changes/006-user-interaction-translation.md`
 
 ## Current Status
 
-Change Spec `005-notification-system` Implemented & Verified.
+Change Spec `006-user-interaction-translation` Implemented & Verified.
 
 ## Last Completed Step
 
-Implemented CAP-005 (Notification System):
-- Created `modules/notification` domain models (`NotificationEvent`, `NotificationType`) and `NotificationPort`.
-- Added `NotificationProperties` configuration binding for `discord.notification.enabled` and `discord.notification.default-channel-id`.
-- Created `DiscordNotificationSender` with JDA Embed formatting (`#2ECC71` green for success, `#E74C3C` red for failure) and Direct Message / Fallback Channel delivery logic.
-- Integrated `NotificationPort` into `MarkingWorkflowOrchestrator` to publish events on punch success and failure.
-- Created `DiscordNotificationSenderTest` and updated `MarkingWorkflowOrchestratorTest`.
-- Validated all 105 tests cleanly passing via `mvn clean test`.
+Implemented CAP-006 (User Interaction Translation):
+- Translated command descriptions and options in `DiscordBotInitializer.java` to PT-BR.
+- Translated reply messages in `DiscordSlashCommandListener.java` and `DiscordCommandHandlerService.java` to PT-BR.
+- Updated user status labels to `ATIVO` / `PAUSADO` and missing values to `Não configurado`.
+- Maintained exact Discord Slash Command names (`register`, `credentials`, `config`, `pause`, `resume`, `status`) and option names (`username`, `password`, `max_entry`, `jitter`).
+- Updated unit tests `DiscordCommandHandlerServiceTest` and `DiscordSlashCommandListenerTest` to assert PT-BR responses.
+- Verified suite execution with `mvn clean test`.
 
 ## Current Blocker
 
@@ -36,4 +36,5 @@ Awaiting next task or user guidance.
 
 ## Last Updated
 
-`2026-07-26 15:26:15 -03:00`
+`2026-07-26 15:29:20 -03:00`
+

@@ -24,7 +24,7 @@ public class DiscordCommandHandlerService {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setBmaUsername(bmaUsername);
         profile.setBmaPassword(bmaPassword);
-        return "Credentials for BMAquiosque user '" + bmaUsername + "' updated successfully.";
+        return "Credenciais do usuário '" + bmaUsername + "' do BMAquiosque atualizadas com sucesso.";
     }
 
     public String configureSchedule(String discordUserId, String maxEntryTime, Integer jitterMinutes) {
@@ -35,32 +35,32 @@ public class DiscordCommandHandlerService {
         if (jitterMinutes != null && jitterMinutes >= 0) {
             profile.setJitterMinutes(jitterMinutes);
         }
-        return "Schedule updated: Max Entry Time = " + profile.getMaxEntryTime() +
-                ", Jitter = " + profile.getJitterMinutes() + " minutes.";
+        return "Configuração atualizada: Horário Máximo de Entrada = " + profile.getMaxEntryTime() +
+                ", Jitter = " + profile.getJitterMinutes() + " minutos.";
     }
 
     public String pauseAutomation(String discordUserId) {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setActive(false);
-        return "Automation PAUSED for your user.";
+        return "Automação PAUSADA para o seu usuário.";
     }
 
     public String resumeAutomation(String discordUserId) {
         DiscordUserProfile profile = registerUser(discordUserId);
         profile.setActive(true);
-        return "Automation RESUMED for your user.";
+        return "Automação RETOMADA para o seu usuário.";
     }
 
     public String getStatus(String discordUserId) {
         Optional<DiscordUserProfile> profileOpt = findUser(discordUserId);
         if (profileOpt.isEmpty()) {
-            return "User not registered. Use /register to create your profile.";
+            return "Usuário não registrado. Use /register para criar seu perfil.";
         }
         DiscordUserProfile profile = profileOpt.get();
         return String.format(
-                "User Status:\n- State: %s\n- BMA User: %s\n- Max Entry Time: %s\n- Jitter: %d min",
-                profile.isActive() ? "ACTIVE" : "PAUSED",
-                profile.getBmaUsername() != null ? profile.getBmaUsername() : "Not configured",
+                "Status do Usuário:\n- Estado: %s\n- Usuário BMA: %s\n- Horário Máx. Entrada: %s\n- Jitter: %d min",
+                profile.isActive() ? "ATIVO" : "PAUSADO",
+                profile.getBmaUsername() != null ? profile.getBmaUsername() : "Não configurado",
                 profile.getMaxEntryTime(),
                 profile.getJitterMinutes()
         );

@@ -82,7 +82,7 @@ class DiscordSlashCommandListenerTest {
     @DisplayName("Should handle /pause and /resume commands with ephemeral response")
     void shouldHandlePauseAndResumeCommands() {
         when(event.getName()).thenReturn("pause");
-        when(commandHandlerService.pauseAutomation(USER_ID)).thenReturn("Automation PAUSED");
+        when(commandHandlerService.pauseAutomation(USER_ID)).thenReturn("Automação PAUSADA");
 
         listener.onSlashCommandInteraction(event);
 
@@ -95,7 +95,7 @@ class DiscordSlashCommandListenerTest {
     @DisplayName("Should handle /status command with ephemeral response")
     void shouldHandleStatusCommand() {
         when(event.getName()).thenReturn("status");
-        when(commandHandlerService.getStatus(USER_ID)).thenReturn("User Status: ACTIVE");
+        when(commandHandlerService.getStatus(USER_ID)).thenReturn("Status do Usuário: ATIVO");
 
         listener.onSlashCommandInteraction(event);
 
