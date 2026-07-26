@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 public class SchedulerTimezoneFilter {
 
-    private static final LocalTime START_TIME = LocalTime.of(5, 0, 0);
+    private static final LocalTime START_TIME = LocalTime.of(6, 0, 0);
     private static final LocalTime END_TIME = LocalTime.of(22, 0, 0);
 
     public boolean isWithinOperatingWindow(ZonedDateTime zonedDateTime) {

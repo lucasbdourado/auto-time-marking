@@ -1,21 +1,20 @@
 # Harness Execution State
 
-## Current Feature
+## Current Feature / Change
 
-`bmaquiosque-automation` / `marking-calculation`
+`001-full-workflow-integration`
 
-## Current Feature Specs
+## Current Change Spec
 
-- `docs/features/bmaquiosque-automation/feature-spec.md`
-- `docs/features/marking-calculation/feature-spec.md`
+- `docs/changes/001-full-workflow-integration.md`
 
 ## Current Status
 
-Features `bmaquiosque-automation` and `marking-calculation` Implemented & Verified
+Change `001-full-workflow-integration` Implemented & Verified (87/87 tests passing)
 
 ## Last Completed Step
 
-Completed full implementation and test suite verification of `bmaquiosque-automation` feature (properties extension, URL and selector validation, domain port `TimeClockClient`, headless `PlaywrightTimeClockClient`, `RetryingTimeClockClient` decorator, failure screenshot diagnostics, and unit/integration test suite with 100% pass rate across 80 tests).
+Completed end-to-end integration specification, operational window alignment (06:00 - 22:00), front-end `#retorno` non-false marking verification, dynamic credential handling, transparent environment switching via `BMAQUIOSQUE_URL`, and full Maven build verification (`BUILD SUCCESS`, 87 tests passed).
 
 ## Current Blocker
 
@@ -23,7 +22,7 @@ None.
 
 ## Required Next Action
 
-All Phase 2 features (`bmaquiosque-automation` and `marking-calculation`) have been fully implemented and verified. Ready for Phase 3 planning or end-to-end workflow review.
+Ready for production deployment or next feature development cycle.
 
 ## Safe Resume Point
 
@@ -31,5 +30,7 @@ All Phase 2 features (`bmaquiosque-automation` and `marking-calculation`) have b
 
 ## Last Updated
 
-`2026-07-26 00:40:00 -03:00`
+`2026-07-26 01:42:00 -03:00`
+
+
 

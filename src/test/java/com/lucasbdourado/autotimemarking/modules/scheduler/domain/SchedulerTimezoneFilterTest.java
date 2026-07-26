@@ -30,8 +30,8 @@ class SchedulerTimezoneFilterTest {
 
     private static Stream<Arguments> operatingWindowScenarios() {
         return Stream.of(
-                Arguments.of("Monday at 04:59 is outside", dateTime(13, 4, 59), false),
-                Arguments.of("Monday at 05:00 is inside", dateTime(13, 5, 0), true),
+                Arguments.of("Monday at 05:59 is outside", dateTime(13, 5, 59), false),
+                Arguments.of("Monday at 06:00 is inside", dateTime(13, 6, 0), true),
                 Arguments.of("Wednesday at 12:00 is inside", dateTime(15, 12, 0), true),
                 Arguments.of("Monday at 22:00 is inside", dateTime(13, 22, 0), true),
                 Arguments.of("Monday at 22:01 is outside", dateTime(13, 22, 1), false),
