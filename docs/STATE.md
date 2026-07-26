@@ -11,11 +11,11 @@
 
 ## Current Status
 
-Feature `marking-calculation` Implemented & Verified
+Features `bmaquiosque-automation` and `marking-calculation` Implemented & Verified
 
 ## Last Completed Step
 
-Completed implementation and full test suite verification of feature `marking-calculation` (domain models, calculation engine with variable lunch recalculation, time jitter service, workflow orchestrator, and unit test suite).
+Completed full implementation and test suite verification of `bmaquiosque-automation` feature (properties extension, URL and selector validation, domain port `TimeClockClient`, headless `PlaywrightTimeClockClient`, `RetryingTimeClockClient` decorator, failure screenshot diagnostics, and unit/integration test suite with 100% pass rate across 80 tests).
 
 ## Current Blocker
 
@@ -23,12 +23,13 @@ None.
 
 ## Required Next Action
 
-Execute remaining task from `docs/features/bmaquiosque-automation/feature-spec.md` (task 2: integration test validation).
+All Phase 2 features (`bmaquiosque-automation` and `marking-calculation`) have been fully implemented and verified. Ready for Phase 3 planning or end-to-end workflow review.
 
 ## Safe Resume Point
 
-`docs/features/bmaquiosque-automation/feature-spec.md`
+`docs/STATE.md`
 
 ## Last Updated
 
-`2026-07-26 00:39:00 -03:00`
+`2026-07-26 00:40:00 -03:00`
+
