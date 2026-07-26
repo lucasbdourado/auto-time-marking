@@ -67,7 +67,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             captureScreenshot(page, "retrieved-markings");
                             return markings;
                         } catch (Exception exception) {
-                            captureScreenshot(page, exception.getMessage());
+                            captureScreenshot(page, "failure");
                             throw exception;
                         }
                     }

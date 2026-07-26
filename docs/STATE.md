@@ -2,19 +2,19 @@
 
 ## Current Feature / Change
 
-`003-wpe-quiosque-single-source-of-truth`
+`004-discord-bot-interface`
 
 ## Current Change Spec
 
-- `docs/changes/003-wpe-quiosque-single-source-of-truth.md`
+- `docs/changes/004-discord-bot-interface.md`
 
 ## Current Status
 
-Change Spec `003-wpe-quiosque-single-source-of-truth` Fully Implemented and Verified.
+Change Spec `004-discord-bot-interface` Fully Implemented and Verified.
 
 ## Last Completed Step
 
-Designed, confirmed, and verified WPE/Quiosque Single Source of Truth specification. All 87 unit and integration tests executed with `BUILD SUCCESS`.
+Implemented JDA 5.x Discord Bot interface (`modules/interaction/discord`), slash command handlers (`/register`, `/credentials`, `/config`, `/pause`, `/resume`, `/status`), and privacy-enforcing listener. Executed full Maven test suite (`mvn clean test`) with `BUILD SUCCESS` (99 tests passed).
 
 ## Current Blocker
 
@@ -22,7 +22,7 @@ None.
 
 ## Required Next Action
 
-Proceed to next planned capability or run application continuously in production environment.
+Proceed to next capability or deploy application with Discord bot enabled.
 
 ## Safe Resume Point
 
@@ -30,4 +30,4 @@ Proceed to next planned capability or run application continuously in production
 
 ## Last Updated
 
-`2026-07-26 02:41:00 -03:00`
+`2026-07-26 03:08:00 -03:00`
