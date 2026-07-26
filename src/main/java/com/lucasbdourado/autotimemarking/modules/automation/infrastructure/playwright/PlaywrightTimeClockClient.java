@@ -46,12 +46,15 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton(), new Page.ClickOptions().setForce(true));
+                            page.click(properties.getSelectors().getLoginButton(),
+                                    new Page.ClickOptions().setForce(true));
 
-                            LOGGER.info("Waiting for markings container selector: {}", properties.getSelectors().getMarkingsContainer());
+                            LOGGER.info("Waiting for markings container selector: {}",
+                                    properties.getSelectors().getMarkingsContainer());
                             page.waitForSelector(properties.getSelectors().getMarkingsContainer());
 
-                            List<ElementHandle> elements = page.querySelectorAll(properties.getSelectors().getMarkingsContainer());
+                            List<ElementHandle> elements = page
+                                    .querySelectorAll(properties.getSelectors().getMarkingsContainer());
                             List<LocalTime> markings = new ArrayList<>();
                             for (ElementHandle element : elements) {
                                 String text = element.innerText().trim();
@@ -61,6 +64,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             }
                             markings.sort(Comparator.naturalOrder());
                             LOGGER.info("Successfully retrieved {} markings for user: {}", markings.size(), username);
+                            captureScreenshot(page, "retrieved-markings");
                             return markings;
                         } catch (Exception exception) {
                             captureScreenshot(page, exception);
@@ -85,12 +89,15 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton(), new Page.ClickOptions().setForce(true));
+                            page.click(properties.getSelectors().getLoginButton(),
+                                    new Page.ClickOptions().setForce(true));
 
-                            LOGGER.info("Checking for punch button selector: {}", properties.getSelectors().getPunchButton());
+                            LOGGER.info("Checking for punch button selector: {}",
+                                    properties.getSelectors().getPunchButton());
                             if (page.querySelectorAll(properties.getSelectors().getPunchButton()).isEmpty()) {
                                 if (!page.querySelectorAll("a[href*='/marcacao/registrar']").isEmpty()) {
-                                    page.click("a[href*='/marcacao/registrar']", new Page.ClickOptions().setForce(true));
+                                    page.click("a[href*='/marcacao/registrar']",
+                                            new Page.ClickOptions().setForce(true));
                                 } else {
                                     String regUrl = properties.getUrl();
                                     if (!regUrl.endsWith("/")) {
@@ -100,18 +107,21 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                                 }
                             }
 
-                            LOGGER.info("Waiting for punch button selector: {}", properties.getSelectors().getPunchButton());
+                            LOGGER.info("Waiting for punch button selector: {}",
+                                    properties.getSelectors().getPunchButton());
                             page.waitForSelector(properties.getSelectors().getPunchButton());
 
                             if (!page.querySelectorAll("#formMarcacao #Senha").isEmpty()) {
                                 page.fill("#formMarcacao #Senha", password);
                             }
 
-                            page.click(properties.getSelectors().getPunchButton(), new Page.ClickOptions().setForce(true));
+                            page.click(properties.getSelectors().getPunchButton(),
+                                    new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Successfully registered time marking for user: {}", username);
+                            captureScreenshot(page, "registered-marking");
                         } catch (Exception exception) {
-                            captureScreenshot(page, exception);
+                            captureScreenshot(page, "failure");
                             throw exception;
                         }
                     }
@@ -128,18 +138,18 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
         return LocalTime.parse(cleaned, TIME_FORMATTER);
     }
 
-    private void captureScreenshot(Page page, Exception exception) {
+    private void captureScreenshot(Page page, String prefix) {
         if (page != null) {
             try {
                 Path screenshotDir = Paths.get("logs/screenshots");
                 if (!Files.exists(screenshotDir)) {
                     Files.createDirectories(screenshotDir);
                 }
-                Path screenshotPath = screenshotDir.resolve("failure-" + System.currentTimeMillis() + ".png");
+                Path screenshotPath = screenshotDir.resolve(prefix + "-" + System.currentTimeMillis() + ".png");
                 page.screenshot(new Page.ScreenshotOptions().setPath(screenshotPath));
-                LOGGER.error("Saved failure screenshot to: {}", screenshotPath.toAbsolutePath(), exception);
-            } catch (Exception screenshotException) {
-                LOGGER.error("Failed to capture failure screenshot", screenshotException);
+                LOGGER.info("Saved screenshot ({}) to: {}", prefix, screenshotPath.toAbsolutePath());
+            } catch (Exception exception) {
+                LOGGER.error("Failed to capture screenshot ({})", prefix, exception);
             }
         }
     }
