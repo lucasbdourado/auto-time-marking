@@ -2,19 +2,25 @@
 
 ## Current Feature / Change
 
-`004-discord-bot-interface`
+`005-notification-system`
 
 ## Current Change Spec
 
-- `docs/changes/004-discord-bot-interface.md`
+- `docs/changes/005-notification-system.md`
 
 ## Current Status
 
-Change Spec `004-discord-bot-interface` Fully Implemented and Verified.
+Change Spec `005-notification-system` Implemented & Verified.
 
 ## Last Completed Step
 
-Implemented JDA 5.x Discord Bot interface (`modules/interaction/discord`), slash command handlers (`/register`, `/credentials`, `/config`, `/pause`, `/resume`, `/status`), and privacy-enforcing listener. Executed full Maven test suite (`mvn clean test`) with `BUILD SUCCESS` (99 tests passed).
+Implemented CAP-005 (Notification System):
+- Created `modules/notification` domain models (`NotificationEvent`, `NotificationType`) and `NotificationPort`.
+- Added `NotificationProperties` configuration binding for `discord.notification.enabled` and `discord.notification.default-channel-id`.
+- Created `DiscordNotificationSender` with JDA Embed formatting (`#2ECC71` green for success, `#E74C3C` red for failure) and Direct Message / Fallback Channel delivery logic.
+- Integrated `NotificationPort` into `MarkingWorkflowOrchestrator` to publish events on punch success and failure.
+- Created `DiscordNotificationSenderTest` and updated `MarkingWorkflowOrchestratorTest`.
+- Validated all 105 tests cleanly passing via `mvn clean test`.
 
 ## Current Blocker
 
@@ -22,7 +28,7 @@ None.
 
 ## Required Next Action
 
-Proceed to next capability or deploy application with Discord bot enabled.
+Awaiting next task or user guidance.
 
 ## Safe Resume Point
 
@@ -30,4 +36,4 @@ Proceed to next capability or deploy application with Discord bot enabled.
 
 ## Last Updated
 
-`2026-07-26 03:08:00 -03:00`
+`2026-07-26 15:26:15 -03:00`

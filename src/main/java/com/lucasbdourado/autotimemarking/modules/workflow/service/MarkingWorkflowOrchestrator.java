@@ -5,6 +5,8 @@ import com.lucasbdourado.autotimemarking.modules.calculation.domain.PunchDecisio
 import com.lucasbdourado.autotimemarking.modules.calculation.domain.WorkdayState;
 import com.lucasbdourado.autotimemarking.modules.calculation.service.MarkingCalculatorService;
 import com.lucasbdourado.autotimemarking.modules.configuration.infrastructure.config.BmaquiosqueProperties;
+import com.lucasbdourado.autotimemarking.modules.notification.domain.model.NotificationEvent;
+import com.lucasbdourado.autotimemarking.modules.notification.domain.port.NotificationPort;
 import com.lucasbdourado.autotimemarking.modules.scheduler.domain.MarkingWorkflow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,15 +28,18 @@ public class MarkingWorkflowOrchestrator implements MarkingWorkflow {
     private final TimeClockClient timeClockClient;
     private final MarkingCalculatorService calculatorService;
     private final BmaquiosqueProperties properties;
+    private final NotificationPort notificationPort;
 
     public MarkingWorkflowOrchestrator(
             TimeClockClient timeClockClient,
             MarkingCalculatorService calculatorService,
-            BmaquiosqueProperties properties
+            BmaquiosqueProperties properties,
+            NotificationPort notificationPort
     ) {
         this.timeClockClient = timeClockClient;
         this.calculatorService = calculatorService;
         this.properties = properties;
+        this.notificationPort = notificationPort;
     }
 
     @Override
@@ -47,10 +52,24 @@ public class MarkingWorkflowOrchestrator implements MarkingWorkflow {
 
         LOGGER.info("Starting marking workflow evaluation cycle at {} ({})", currentTime, timezoneStr);
 
-        List<LocalTime> dailyTimes = timeClockClient.retrieveDailyMarkings(
-                properties.getUsername(),
-                properties.getPassword()
-        );
+        List<LocalTime> dailyTimes;
+        try {
+            dailyTimes = timeClockClient.retrieveDailyMarkings(
+                    properties.getUsername(),
+                    properties.getPassword()
+            );
+        } catch (Exception e) {
+            LOGGER.error("Failed to retrieve daily markings: {}", e.getMessage(), e);
+            notificationPort.sendNotification(
+                    NotificationEvent.failure(
+                            null,
+                            "CONSULTA_PONTO",
+                            "Erro ao consultar marcações do dia: " + e.getMessage(),
+                            1
+                    )
+            );
+            throw e;
+        }
 
         if (dailyTimes == null) {
             dailyTimes = Collections.emptyList();
@@ -72,8 +91,29 @@ public class MarkingWorkflowOrchestrator implements MarkingWorkflow {
 
         if (decision.shouldPunch()) {
             LOGGER.info("Triggering punch registration for stage: {}", decision.nextType());
-            timeClockClient.registerMarking(properties.getUsername(), properties.getPassword());
-            LOGGER.info("Successfully registered punch for stage: {}", decision.nextType());
+            String stageName = decision.nextType() != null ? decision.nextType().name() : "MARCAÇÃO";
+            try {
+                timeClockClient.registerMarking(properties.getUsername(), properties.getPassword());
+                LOGGER.info("Successfully registered punch for stage: {}", decision.nextType());
+                notificationPort.sendNotification(
+                        NotificationEvent.success(
+                                null,
+                                stageName,
+                                "Marcação registrada com sucesso via BMAquiosque."
+                        )
+                );
+            } catch (Exception e) {
+                LOGGER.error("Failed to register punch for stage {}: {}", stageName, e.getMessage(), e);
+                notificationPort.sendNotification(
+                        NotificationEvent.failure(
+                                null,
+                                stageName,
+                                "Erro ao registrar ponto: " + e.getMessage(),
+                                1
+                        )
+                );
+                throw e;
+            }
         } else {
             LOGGER.info("No punch required at this cycle: {}", decision.reason());
         }
