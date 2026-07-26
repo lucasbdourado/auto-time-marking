@@ -1,18 +1,36 @@
 package com.lucasbdourado.autotimemarking.modules.interaction.discord.service;
 
+import com.lucasbdourado.autotimemarking.modules.automation.domain.TimeClockClient;
+import com.lucasbdourado.autotimemarking.modules.calculation.domain.WorkdaySummary;
+import com.lucasbdourado.autotimemarking.modules.calculation.service.WorkdaySummaryService;
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.model.DiscordUserProfile;
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.port.DiscordUserProfileRepository;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DiscordCommandHandlerService {
 
     private final DiscordUserProfileRepository userProfileRepository;
+    private final TimeClockClient timeClockClient;
+    private final WorkdaySummaryService summaryService;
+    private final DiscordWorkdayEmbedBuilder embedBuilder;
 
-    public DiscordCommandHandlerService(DiscordUserProfileRepository userProfileRepository) {
+    public DiscordCommandHandlerService(
+            DiscordUserProfileRepository userProfileRepository,
+            TimeClockClient timeClockClient,
+            WorkdaySummaryService summaryService,
+            DiscordWorkdayEmbedBuilder embedBuilder
+    ) {
         this.userProfileRepository = userProfileRepository;
+        this.timeClockClient = timeClockClient;
+        this.summaryService = summaryService;
+        this.embedBuilder = embedBuilder;
     }
 
     public DiscordUserProfile registerUser(String discordUserId) {
@@ -72,5 +90,18 @@ public class DiscordCommandHandlerService {
                 profile.getMaxEntryTime(),
                 profile.getJitterMinutes()
         );
+    }
+
+    public MessageEmbed getWorkdaySummaryEmbed(String discordUserId) throws Exception {
+        Optional<DiscordUserProfile> profileOpt = findUser(discordUserId);
+        if (profileOpt.isEmpty() || profileOpt.get().getBmaUsername() == null || profileOpt.get().getBmaUsername().isBlank()) {
+            throw new IllegalArgumentException("Usuário não registrado ou credenciais do BMAquiosque não configuradas. Use /register e /credentials primeiro.");
+        }
+
+        DiscordUserProfile profile = profileOpt.get();
+        List<LocalTime> times = timeClockClient.retrieveDailyMarkings(profile.getBmaUsername(), profile.getBmaPassword());
+        WorkdaySummary summary = summaryService.calculateSummary(times, LocalDate.now(), LocalTime.now());
+
+        return embedBuilder.buildWorkDaySummaryEmbed(summary);
     }
 }

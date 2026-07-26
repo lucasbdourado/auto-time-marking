@@ -1,11 +1,15 @@
 package com.lucasbdourado.autotimemarking.modules.interaction.discord.service;
 
+import com.lucasbdourado.autotimemarking.modules.automation.domain.TimeClockClient;
+import com.lucasbdourado.autotimemarking.modules.calculation.service.WorkdaySummaryService;
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.model.DiscordUserProfile;
 import com.lucasbdourado.autotimemarking.modules.interaction.discord.domain.port.DiscordUserProfileRepository;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +22,17 @@ class DiscordCommandHandlerServiceTest {
 
     private DiscordCommandHandlerService service;
     private DiscordUserProfileRepository repository;
+    private StubTimeClockClient timeClockClient;
     private static final String USER_ID = "discord-123456";
 
     @BeforeEach
     void setUp() {
         repository = new InMemoryDiscordUserProfileRepository();
-        service = new DiscordCommandHandlerService(repository);
+        timeClockClient = new StubTimeClockClient();
+        WorkdaySummaryService summaryService = new WorkdaySummaryService();
+        DiscordWorkdayEmbedBuilder embedBuilder = new DiscordWorkdayEmbedBuilder(summaryService);
+
+        service = new DiscordCommandHandlerService(repository, timeClockClient, summaryService, embedBuilder);
     }
 
     @Test
@@ -98,6 +107,26 @@ class DiscordCommandHandlerServiceTest {
         assertTrue(status.contains("Usuário não registrado"));
     }
 
+    @Test
+    @DisplayName("Should generate workday summary embed for user with credentials")
+    void shouldGenerateWorkdaySummaryEmbed() throws Exception {
+        service.setCredentials(USER_ID, "alice.smith", "pass456");
+        timeClockClient.dailyMarkings = List.of(LocalTime.of(8, 0), LocalTime.of(12, 0));
+
+        MessageEmbed embed = service.getWorkdaySummaryEmbed(USER_ID);
+
+        assertNotNull(embed);
+        assertTrue(embed.getTitle().contains("Resumo do ponto"));
+    }
+
+    @Test
+    @DisplayName("Should throw exception when getting summary embed for user without credentials")
+    void shouldThrowExceptionWhenNoCredentials() {
+        service.registerUser(USER_ID);
+
+        assertThrows(IllegalArgumentException.class, () -> service.getWorkdaySummaryEmbed(USER_ID));
+    }
+
     private static class InMemoryDiscordUserProfileRepository implements DiscordUserProfileRepository {
         private final Map<String, DiscordUserProfile> map = new HashMap<>();
 
@@ -120,6 +149,19 @@ class DiscordCommandHandlerServiceTest {
         @Override
         public void deleteByDiscordUserId(String discordUserId) {
             map.remove(discordUserId);
+        }
+    }
+
+    private static class StubTimeClockClient implements TimeClockClient {
+        List<LocalTime> dailyMarkings = List.of();
+
+        @Override
+        public List<LocalTime> retrieveDailyMarkings(String username, String password) {
+            return dailyMarkings;
+        }
+
+        @Override
+        public void registerMarking(String username, String password) {
         }
     }
 }

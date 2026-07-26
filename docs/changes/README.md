@@ -9,4 +9,6 @@
 | 005 | Notification System | [005-notification-system.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/005-notification-system.md) | Implemented & Verified |
 | 006 | User Interaction Translation | [006-user-interaction-translation.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/006-user-interaction-translation.md) | Implemented & Verified |
 | 007 | Database Credentials & User Profile | [007-database-credentials-and-user-profile.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/007-database-credentials-and-user-profile.md) | Implemented & Verified |
+| 008 | Discord Workday Markings Summary | [008-discord-workday-summary.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/008-discord-workday-summary.md) | Confirmed & Specified |
+
 

@@ -59,7 +59,9 @@ public class DiscordBotInitializer {
                         .addOption(OptionType.INTEGER, "jitter", "Variação aleatória em minutos", false),
                 Commands.slash("pause", "Pausar a marcação automática de ponto"),
                 Commands.slash("resume", "Retomar a marcação automática de ponto"),
-                Commands.slash("status", "Verificar o status atual da automação e configurações")
+                Commands.slash("status", "Verificar o status atual da automação e configurações"),
+                Commands.slash("ponto", "Exibe o resumo das marcações de ponto do dia atual"),
+                Commands.slash("resumo", "Exibe o resumo das marcações de ponto do dia atual")
         );
 
         if (properties.getGuildId() != null && !properties.getGuildId().isBlank()) {
