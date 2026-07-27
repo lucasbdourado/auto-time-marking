@@ -49,19 +49,39 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
 
-                            LOGGER.info("Waiting for markings container selector: {}",
-                                    properties.getSelectors().getMarkingsContainer());
-                            page.waitForSelector(properties.getSelectors().getMarkingsContainer());
+                            // Check if markings are on the landing page; if not, navigate to Registrar Marcação
+                            boolean hasMarkingsOnLanding = !page.querySelectorAll(properties.getSelectors().getMarkingsContainer()).isEmpty()
+                                    || !page.querySelectorAll("#mco_pendentes").isEmpty();
 
-                            List<ElementHandle> elements = page
-                                    .querySelectorAll(properties.getSelectors().getMarkingsContainer());
+                            if (!hasMarkingsOnLanding) {
+                                LOGGER.info("Markings container not found on landing page. Navigating to 'Registrar Marcação'...");
+                                if (!page.querySelectorAll("a[href*='/marcacao/registrar']").isEmpty()) {
+                                    page.click("a[href*='/marcacao/registrar']", new Page.ClickOptions().setForce(true));
+                                } else {
+                                    String regUrl = properties.getUrl();
+                                    if (!regUrl.endsWith("/")) {
+                                        regUrl += "/";
+                                    }
+                                    page.navigate(regUrl + "marcacao/registrar");
+                                }
+                            }
+
+                            String combinedSelector = properties.getSelectors().getMarkingsContainer() + ", #mco_pendentes tbody tr td:nth-child(3), #mco_pendentes";
+                            LOGGER.info("Waiting for markings container selector: {}", combinedSelector);
+                            page.waitForSelector(combinedSelector);
+
                             List<LocalTime> markings = new ArrayList<>();
+                            String targetItemSelector = properties.getSelectors().getMarkingsContainer() + ", #mco_pendentes tbody tr td:nth-child(3)";
+                            List<ElementHandle> elements = page.querySelectorAll(targetItemSelector);
                             for (ElementHandle element : elements) {
                                 String text = element.innerText().trim();
                                 if (!text.isEmpty()) {
-                                    markings.add(parseTime(text));
+                                    try {
+                                        markings.add(parseTime(text));
+                                    } catch (Exception ignored) {}
                                 }
                             }
+
                             markings.sort(Comparator.naturalOrder());
                             LOGGER.info("Successfully retrieved {} markings for user: {}", markings.size(), username);
                             captureScreenshot(page, "retrieved-markings");
@@ -92,9 +112,9 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
 
-                            LOGGER.info("Checking for punch button selector: {}",
-                                    properties.getSelectors().getPunchButton());
-                            if (page.querySelectorAll(properties.getSelectors().getPunchButton()).isEmpty()) {
+                            String punchSelector = resolvePunchButtonSelector();
+                            LOGGER.info("Checking for punch button selector: {}", punchSelector);
+                            if (page.querySelectorAll(punchSelector).isEmpty()) {
                                 if (!page.querySelectorAll("a[href*='/marcacao/registrar']").isEmpty()) {
                                     page.click("a[href*='/marcacao/registrar']",
                                             new Page.ClickOptions().setForce(true));
@@ -107,15 +127,14 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                                 }
                             }
 
-                            LOGGER.info("Waiting for punch button selector: {}",
-                                    properties.getSelectors().getPunchButton());
-                            page.waitForSelector(properties.getSelectors().getPunchButton());
+                            LOGGER.info("Waiting for punch button selector: {}", punchSelector);
+                            page.waitForSelector(punchSelector);
 
                             if (!page.querySelectorAll("#formMarcacao #Senha").isEmpty()) {
                                 page.fill("#formMarcacao #Senha", password);
                             }
 
-                            page.click(properties.getSelectors().getPunchButton(),
+                            page.click(punchSelector,
                                     new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Successfully registered time marking for user: {}", username);
@@ -134,6 +153,14 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
         String selector = properties.getSelectors().getLoginButton();
         if (selector == null || selector.isBlank() || selector.equals("input[type='submit']")) {
             return "form[action*='login'] input[type='submit'], input[value='Acessar'], input[type='submit']";
+        }
+        return selector;
+    }
+
+    private String resolvePunchButtonSelector() {
+        String selector = properties.getSelectors().getPunchButton();
+        if (selector == null || selector.isBlank() || selector.equals("#btn-punch")) {
+            return "#btnEfetuarMarcacao, #btn-punch, input[value='Efetuar Marcação']";
         }
         return selector;
     }

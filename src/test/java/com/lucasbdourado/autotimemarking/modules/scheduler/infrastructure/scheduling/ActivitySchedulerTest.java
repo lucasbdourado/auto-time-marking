@@ -30,7 +30,7 @@ class ActivitySchedulerTest {
 
     @BeforeEach
     void setUp() {
-        scheduler = new ActivityScheduler(markingWorkflow, timezoneFilter, "America/Sao_Paulo");
+        scheduler = new ActivityScheduler(markingWorkflow, timezoneFilter, "America/Sao_Paulo", true);
     }
 
     @Test
@@ -40,6 +40,15 @@ class ActivitySchedulerTest {
         scheduler.execute();
 
         verify(markingWorkflow).executeMarkingCycle();
+    }
+
+    @Test
+    void execute_whenDisabled_shouldSkipWorkflow() throws Exception {
+        ActivityScheduler disabledScheduler = new ActivityScheduler(markingWorkflow, timezoneFilter, "America/Sao_Paulo", false);
+
+        disabledScheduler.execute();
+
+        verify(markingWorkflow, never()).executeMarkingCycle();
     }
 
     @Test

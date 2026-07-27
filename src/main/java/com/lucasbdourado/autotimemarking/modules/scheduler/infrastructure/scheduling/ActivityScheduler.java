@@ -19,15 +19,18 @@ public class ActivityScheduler {
     private final MarkingWorkflow markingWorkflow;
     private final SchedulerTimezoneFilter timezoneFilter;
     private final String timezone;
+    private final boolean enabled;
 
     public ActivityScheduler(
             MarkingWorkflow markingWorkflow,
             SchedulerTimezoneFilter timezoneFilter,
-            @Value("${bmaquiosque.timezone}") String timezone
+            @Value("${bmaquiosque.timezone}") String timezone,
+            @Value("${bmaquiosque.scheduler.enabled:false}") boolean enabled
     ) {
         this.markingWorkflow = markingWorkflow;
         this.timezoneFilter = timezoneFilter;
         this.timezone = timezone;
+        this.enabled = enabled;
     }
 
     @Scheduled(
@@ -35,6 +38,10 @@ public class ActivityScheduler {
             initialDelayString = "${bmaquiosque.scheduler.initial-delay-ms:0}"
     )
     public void execute() {
+        if (!enabled) {
+            LOGGER.info("Automatic activity scheduler is disabled. Skipping marking cycle.");
+            return;
+        }
         try {
             ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of(timezone));
 
