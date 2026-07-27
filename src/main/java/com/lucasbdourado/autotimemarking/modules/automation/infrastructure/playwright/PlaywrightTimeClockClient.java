@@ -46,7 +46,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton(),
+                            page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Waiting for markings container selector: {}",
@@ -89,7 +89,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
 
                             page.fill(properties.getSelectors().getUsername(), username);
                             page.fill(properties.getSelectors().getPassword(), password);
-                            page.click(properties.getSelectors().getLoginButton(),
+                            page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
 
                             LOGGER.info("Checking for punch button selector: {}",
@@ -128,6 +128,14 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                 }
             }
         }
+    }
+
+    private String resolveLoginButtonSelector() {
+        String selector = properties.getSelectors().getLoginButton();
+        if (selector == null || selector.isBlank() || selector.equals("input[type='submit']")) {
+            return "form[action*='login'] input[type='submit'], input[value='Acessar'], input[type='submit']";
+        }
+        return selector;
     }
 
     private LocalTime parseTime(String text) {

@@ -30,7 +30,10 @@ public class ActivityScheduler {
         this.timezone = timezone;
     }
 
-    @Scheduled(fixedDelayString = "${bmaquiosque.scheduler.interval-ms:1800000}")
+    @Scheduled(
+            fixedDelayString = "${bmaquiosque.scheduler.interval-ms:1800000}",
+            initialDelayString = "${bmaquiosque.scheduler.initial-delay-ms:0}"
+    )
     public void execute() {
         try {
             ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.of(timezone));

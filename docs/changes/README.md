@@ -11,5 +11,6 @@
 | 007 | Database Credentials & User Profile | [007-database-credentials-and-user-profile.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/007-database-credentials-and-user-profile.md) | Implemented & Verified |
 | 008 | Discord Workday Markings Summary | [008-discord-workday-summary.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/008-discord-workday-summary.md) | Confirmed & Specified |
 | 009 | Markings Display & Workday Shift Limits | [009-markings-display-and-limits.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/009-markings-display-and-limits.md) | Implemented & Verified |
+| 010 | Startup & Scheduled Marking Control | [010-startup-and-scheduled-marking-control.md](file:///c:/Users/lucas.dourado/IdeaProjects/auto-time-marking/docs/changes/010-startup-and-scheduled-marking-control.md) | Draft & Pending Confirmation |
 
 

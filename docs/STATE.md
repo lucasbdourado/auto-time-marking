@@ -2,24 +2,22 @@
 
 ## Current Feature / Change
 
-`009-markings-display-and-limits`
+`010-startup-and-scheduled-marking-control`
 
 ## Current Change Spec
 
-- `docs/changes/009-markings-display-and-limits.md`
+- `docs/changes/010-startup-and-scheduled-marking-control.md`
 
 ## Current Status
 
-Change Spec `009-markings-display-and-limits` Implemented & Verified.
+Change Spec `010-startup-and-scheduled-marking-control` Implemented & Verified.
 
 ## Last Completed Step
 
-Implemented CAP-009 (Markings Display & Workday Shift Limits):
-- Updated `WorkdaySummary` record with `maxExitTime` and `maxLunchReturnTime` fields.
-- Updated `WorkdaySummaryService` calculation logic to calculate `maxExitTime` (6h post-lunch return) and `maxLunchReturnTime` (2h max lunch break).
-- Preserved strict list of markings display in `formatMarkings` (only registered markings rendered).
-- Updated `DiscordWorkdayEmbedBuilder` to render `Horário máximo de saída` and `Retorno máximo do almoço` fields.
-- Updated unit test suites `WorkdaySummaryServiceTest` and `DiscordWorkdayEmbedBuilderTest`.
+Implemented CAP-010 (Startup & Scheduled Marking Execution Control):
+- Configured `initialDelayString = "${bmaquiosque.scheduler.initial-delay-ms:60000}"` on `@Scheduled` in `ActivityScheduler`.
+- Added `bmaquiosque.scheduler.initial-delay-ms` and `bmaquiosque.scheduler.interval-ms` properties to `application.properties`.
+- Executed full test suite (`mvn test`) and verified all 120 tests pass cleanly (`BUILD SUCCESS`).
 
 ## Current Blocker
 
@@ -35,4 +33,6 @@ Awaiting next task or user guidance.
 
 ## Last Updated
 
-`2026-07-26 20:19:00 -03:00`
+`2026-07-27 10:20:00 -03:00`
+
+
