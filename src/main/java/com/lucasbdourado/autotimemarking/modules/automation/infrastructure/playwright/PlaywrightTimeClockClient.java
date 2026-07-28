@@ -8,6 +8,7 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.options.LoadState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -48,10 +49,13 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             page.fill(properties.getSelectors().getPassword(), password);
                             page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
+                            page.waitForLoadState(LoadState.DOMCONTENTLOADED);
+
+                            String targetItemSelector = properties.getSelectors().getMarkingsContainer() + ", #mco_pendentes tbody tr td:nth-child(3)";
 
                             // Check if markings are on the landing page; if not, navigate to Registrar Marcação
                             boolean hasMarkingsOnLanding = !page.querySelectorAll(properties.getSelectors().getMarkingsContainer()).isEmpty()
-                                    || !page.querySelectorAll("#mco_pendentes").isEmpty();
+                                    || !page.querySelectorAll("#mco_pendentes tbody tr td:nth-child(3)").isEmpty();
 
                             if (!hasMarkingsOnLanding) {
                                 LOGGER.info("Markings container not found on landing page. Navigating to 'Registrar Marcação'...");
@@ -64,20 +68,23 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                                     }
                                     page.navigate(regUrl + "marcacao/registrar");
                                 }
+                                page.waitForLoadState(LoadState.DOMCONTENTLOADED);
                             }
 
-                            String combinedSelector = properties.getSelectors().getMarkingsContainer() + ", #mco_pendentes tbody tr td:nth-child(3), #mco_pendentes";
-                            LOGGER.info("Waiting for markings container selector: {}", combinedSelector);
-                            page.waitForSelector(combinedSelector);
+                            LOGGER.info("Waiting for markings container selector: {}", targetItemSelector);
+                            try {
+                                page.waitForSelector(targetItemSelector, new Page.WaitForSelectorOptions().setTimeout(10000));
+                            } catch (Exception e) {
+                                LOGGER.warn("Timeout waiting for markings selector: {}", e.getMessage());
+                            }
 
                             List<LocalTime> markings = new ArrayList<>();
-                            String targetItemSelector = properties.getSelectors().getMarkingsContainer() + ", #mco_pendentes tbody tr td:nth-child(3)";
-                            List<ElementHandle> elements = page.querySelectorAll(targetItemSelector);
-                            for (ElementHandle element : elements) {
-                                String text = element.innerText().trim();
-                                if (!text.isEmpty()) {
+                            List<String> texts = page.locator(targetItemSelector).allInnerTexts();
+                            for (String text : texts) {
+                                String cleaned = text.trim();
+                                if (!cleaned.isEmpty()) {
                                     try {
-                                        markings.add(parseTime(text));
+                                        markings.add(parseTime(cleaned));
                                     } catch (Exception ignored) {}
                                 }
                             }
@@ -111,6 +118,7 @@ public class PlaywrightTimeClockClient implements TimeClockClient {
                             page.fill(properties.getSelectors().getPassword(), password);
                             page.click(resolveLoginButtonSelector(),
                                     new Page.ClickOptions().setForce(true));
+                            page.waitForLoadState(LoadState.DOMCONTENTLOADED);
 
                             String punchSelector = resolvePunchButtonSelector();
                             LOGGER.info("Checking for punch button selector: {}", punchSelector);
